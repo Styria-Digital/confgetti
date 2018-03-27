@@ -107,7 +107,6 @@ setup(
             'faker',
             'testfixtures',
             'mock',
-            'model_mommy',
             'pytest>=3.0',
             'pytest-cov',
             'pytest-cache',
