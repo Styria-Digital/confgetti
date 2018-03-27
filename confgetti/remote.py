@@ -1,13 +1,15 @@
 import os
 import consul
 
+from requests.exceptions import ConnectionError
+
 CONSUL_HOST = os.environ.get('CONSUL_HOST', 'consul')
 CONSUL_PORT = os.environ.get('CONSUL_PORT', 8500)
 CONSUL_SCHEME = os.environ.get('CONSUL_SCHEME', 'http')
 CONSUL_TOKEN = os.environ.get('CONSUL_TOKEN')
 CONSUL_DC = os.environ.get('CONSUL_DC')
 
-# REMOVE
+# TODO: REMOVE
 CONSUL_HOST = '127.0.0.1'
 
 
@@ -45,11 +47,13 @@ class ConsulInterface(object):
 
             return data.get('Value')
         else:
-            raise ConnectionError
+            raise AttributeError
 
 try:
-    value = ConsulInterface(False).get_value_for_key('AWS_SECRET_ID', path='Sanitag')
+    value = ConsulInterface(True).get_value_for_key('AWS_SECRET_ID', path='Sanitag')
     print(value)
 except ConnectionError:
-    print('Connection not defined')
+    print('Connection failed')
+except AttributeError:
+    print('Connection is not defined!')
 
