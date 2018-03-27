@@ -1,0 +1,17 @@
+# Includes
+include LICENSE
+include README.rst
+include setup.py
+include .coveragerc
+include tox.ini
+include CHANGELOG.md
+include *.txt
+
+recursive-include confgetti *
+recursive-include requirements *.txt
+
+# Excludes
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude demo *
+recursive-exclude tests *

@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = confgetti
+
+[report]
+show_missing = True
+omit =
+    tests/*
+    demo/*
