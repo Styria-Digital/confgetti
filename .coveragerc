@@ -7,3 +7,4 @@ show_missing = True
 omit =
     tests/*
     demos/*
+    setup.py
