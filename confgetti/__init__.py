@@ -1,2 +1,2 @@
-from .interface import ConsulInterface
+from .remote import ConsulInterface
 from .base import Confgetti

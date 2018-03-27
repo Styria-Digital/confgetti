@@ -1,7 +1,7 @@
 import os
 import logging
 
-from confgetti.interface import ConsulInterface
+from confgetti.remote import ConsulInterface
 from confgetti.exceptions import UndefinedConnectionError
 from requests.exceptions import ConnectionError
 
