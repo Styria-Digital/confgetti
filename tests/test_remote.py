@@ -3,28 +3,10 @@ import pytest
 import responses
 
 from unittest import TestCase, mock
+from fixtures import CONSUL_DUMMY_RESPONSE, CONSUL_DUMMY_RESPONSE_LEVELED
 
 from confgetti.remote import ConsulInterface
 from confgetti.exceptions import UndefinedConnectionError
-
-
-CONSUL_DUMMY_RESPONSE = {
-    "LockIndex": 0,
-    "Key": "my_variable",
-    "Flags": 0,
-    "Value": "Zm9v",
-    "CreateIndex": 924,
-    "ModifyIndex": 924
-}
-
-CONSUL_DUMMY_RESPONSE_LEVELED = {
-    "LockIndex": 0,
-    "Key": "my_service/my_variable",
-    "Flags": 0,
-    "Value": "Zm9v",
-    "CreateIndex": 924,
-    "ModifyIndex": 924
-}
 
 
 class ConsulInterfaceTestCase(TestCase):
@@ -39,7 +21,7 @@ class ConsulInterfaceTestCase(TestCase):
 
         assert cgtti.connection.http.host == 'foo'
         assert cgtti.default_consul_config.get('host') == 'foo'
-    
+
     def test_create_connection_default_config_from_env(self):
         cgtti = ConsulInterface()
         connection = cgtti.create_connection()
@@ -128,5 +110,3 @@ class ConsulInterfaceTestCase(TestCase):
         cgtti = ConsulInterface(prepare_connection=True)
 
         assert cgtti.get_raw_value('my_variable') is None
-
-        
