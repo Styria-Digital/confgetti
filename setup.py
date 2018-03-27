@@ -28,7 +28,7 @@ except KeyError:
     STYRIA_EXTRA_INDEX_URL = ''
 
 setup(
-    name="CONFGETTI",
+    name="confgetti",
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -80,7 +80,9 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[],
+    install_requires=[
+        'python-consul'
+    ],
 
     dependency_links=[
         STYRIA_EXTRA_INDEX_URL
