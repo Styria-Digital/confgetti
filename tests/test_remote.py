@@ -10,21 +10,18 @@ from confgetti.exceptions import UndefinedConnectionError
 
 
 class ConsulInterfaceTestCase(TestCase):
-    def setUp(self):
-        self.cgtti = ConsulInterface()
-
     @mock.patch.dict(os.environ, {
         'CONSUL_HOST': 'foo'
     })
     def test__init__(self):
-        cgtti = ConsulInterface(prepare_connection=True)
+        ci = ConsulInterface(prepare_connection=True)
 
-        assert cgtti.connection.http.host == 'foo'
-        assert cgtti.default_consul_config.get('host') == 'foo'
+        assert ci.connection.http.host == 'foo'
+        assert ci.default_consul_config.get('host') == 'foo'
 
     def test_create_connection_default_config_from_env(self):
-        cgtti = ConsulInterface()
-        connection = cgtti.create_connection()
+        ci = ConsulInterface()
+        connection = ci.create_connection()
 
         assert connection.http.host == 'consul'
 
@@ -36,8 +33,8 @@ class ConsulInterfaceTestCase(TestCase):
             'token': None,
             'dc': 'mydc'
         }
-        cgtti = ConsulInterface()
-        connection = cgtti.create_connection(dummy_consul_config)
+        ci = ConsulInterface()
+        connection = ci.create_connection(dummy_consul_config)
 
         assert connection.http.host == dummy_consul_config.get('host')
         assert connection.http.port == dummy_consul_config.get('port')
@@ -53,19 +50,19 @@ class ConsulInterfaceTestCase(TestCase):
             'token': None,
             'dc': 'mydc'
         }
-        cgtti = ConsulInterface(prepare_connection=True)
+        ci = ConsulInterface(prepare_connection=True)
 
-        connection = cgtti.create_connection(dummy_consul_config)
+        connection = ci.create_connection(dummy_consul_config)
 
         assert connection.http.host != dummy_consul_config.get('host')
         assert connection.http.port != dummy_consul_config.get('port')
         assert connection.dc != dummy_consul_config.get('dc')
 
     def test__check_connection__error_raises(self):
-        cgtti = ConsulInterface()
+        ci = ConsulInterface()
 
         with pytest.raises(UndefinedConnectionError) as excinfo:
-            cgtti._check_connection()
+            ci._check_connection()
 
         assert str(excinfo.value) == 'Consul connection is not defined!'
 
@@ -79,9 +76,9 @@ class ConsulInterfaceTestCase(TestCase):
             status=200
         )
 
-        cgtti = ConsulInterface(prepare_connection=True)
+        ci = ConsulInterface(prepare_connection=True)
 
-        assert cgtti.get_raw_value('my_variable') == b'foo'
+        assert ci.get_raw_value('my_variable') == b'foo'
 
     @responses.activate
     def test_get_raw_value_from_path(self):
@@ -93,9 +90,9 @@ class ConsulInterfaceTestCase(TestCase):
             status=200
         )
 
-        cgtti = ConsulInterface(prepare_connection=True)
+        ci = ConsulInterface(prepare_connection=True)
 
-        assert cgtti.get_raw_value('my_variable', path='my_service') == b'foo'
+        assert ci.get_raw_value('my_variable', path='my_service') == b'foo'
 
     @responses.activate
     def test_get_raw_value_key_does_not_exist(self):
@@ -107,6 +104,6 @@ class ConsulInterfaceTestCase(TestCase):
             status=404
         )
 
-        cgtti = ConsulInterface(prepare_connection=True)
+        ci = ConsulInterface(prepare_connection=True)
 
-        assert cgtti.get_raw_value('my_variable') is None
+        assert ci.get_raw_value('my_variable') is None
