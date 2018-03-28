@@ -9,6 +9,8 @@ log = logging.getLogger(__name__)
 
 
 class Confgetti(object):
+    consul_interface_class = ConsulInterface
+
     def __init__(self, prepare_consul=True, consul_config=None):
         """
         Uses passed consul configuration to initalize consul interface,
@@ -21,16 +23,54 @@ class Confgetti(object):
         :type consul_config: dictionary/None
         """
         if consul_config is not None:
-            self.consul = ConsulInterface()
+            self.consul = self.consul_interface_class()
             self.consul.create_connection(consul_config)
         else:
-            self.consul = ConsulInterface(prepare_consul)
+            self.consul = self.consul_interface_class(prepare_consul)
+
+        self.convert_error_template = '"{0}" cannot be converted to {1}!'
+        self.false_compare_list = ['false', 'False']
+        self.true_compare_list = ['true', 'True']
+
+    def _convert_variable(self, value, convert_to=None):
+        if type(value) == bytes:
+            value = value.decode('ascii')
+
+        if convert_to == 'boolean':
+            if value in self.false_compare_list:
+                value = False
+            elif value in self.true_compare_list:
+                value = True
+            else:
+                log.warning('"{0}" cannot be converted to {1}!'.format(
+                    value,
+                    convert_to
+                ))
+        elif convert_to == 'integer':
+            try:
+                value = int(value)
+            except ValueError:
+                log.warning('"{0}" cannot be converted to {1}!'.format(
+                    value,
+                    convert_to
+                ))
+        elif convert_to == 'float':
+            try:
+                value = float(value)
+            except ValueError:
+                log.warning('"{0}" cannot be converted to {1}!'.format(
+                    value,
+                    convert_to
+                ))
+
+        return value
 
     def get_variable(
             self,
             key,
             path=None,
             fallback=None,
+            convert_to=None,
             use_env=True,
             use_consul=True):
         """
@@ -71,7 +111,7 @@ class Confgetti(object):
                             ))
 
         # TODO: Handle conversion to wanted type of returned value or treat as string?
-        # if variable is not None:
-        #     pass
+        if variable is not None:
+            variable = self._convert_variable(variable, convert_to)
 
         return variable if variable is not None else fallback
