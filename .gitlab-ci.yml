@@ -1,0 +1,24 @@
+stages:
+  - test
+  - build
+
+image:
+  python:3.6.1
+
+before_script:
+  # adding pip cache
+  - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
+
+test_code:
+  stage: test
+  script:
+    - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+    - pytest . --cov=.
+
+test_build:
+  stage: build
+  script:
+    - python setup.py build
+    - python setup.py install
+
+
