@@ -2,15 +2,79 @@ import os
 import logging
 import json
 
-from confgetti.remote import ConsulInterface
-from confgetti.exceptions import UndefinedConnectionError
 from requests.exceptions import ConnectionError
+
+from confgetti.remote import ConsulInterface
+from confgetti.exceptions import UndefinedConnectionError, ConvertValueError
+
 
 log = logging.getLogger(__name__)
 
 
+class ValueConvert(object):
+    def __init__(self):
+        self.false_compare_list = ['false', 'False']
+        self.true_compare_list = ['true', 'True']
+
+    def convert_boolean(self, value):
+        if value in self.false_compare_list:
+            value = False
+        elif value in self.true_compare_list:
+            value = True
+        else:
+            raise ConvertValueError
+
+        return value
+
+    def convert_integer(self, value):
+        try:
+            value = int(value)
+        except ValueError:
+            raise ConvertValueError
+
+        return value
+
+    def convert_float(self, value):
+        try:
+            value = float(value)
+        except ValueError:
+            raise ConvertValueError
+
+        return value
+
+    def convert_dict(self, value):
+        try:
+            value = json.loads(value)
+        except json.decoder.JSONDecodeError:
+            raise ConvertValueError
+
+        return value
+
+    def convert(self, value, convert_to):
+        convert_method_name = 'convert_{0}'.format(convert_to)
+        convert_method = getattr(self, convert_method_name)
+
+        if type(value) == bytes:
+            value = value.decode('ascii')
+
+        if convert_method:
+            try:
+                value = convert_method(value)
+            except ConvertValueError:
+                log.warning('"{0}" cannot be converted to {1}!'.format(
+                    value, convert_to
+                ))
+        else:
+            log.warning(
+                'method for "{0}" does not exist!'.format(convert_to)
+            )
+
+        return value
+
+
 class Confgetti(object):
     consul_interface_class = ConsulInterface
+    value_convert_class = ValueConvert
 
     def __init__(self, prepare_consul=True, consul_config=None):
         """
@@ -29,50 +93,7 @@ class Confgetti(object):
         else:
             self.consul = self.consul_interface_class(prepare_consul)
 
-        self.convert_error_template = '"{0}" cannot be converted to {1}!'
-        self.false_compare_list = ['false', 'False']
-        self.true_compare_list = ['true', 'True']
-
-    def _convert_variable(self, value, convert_to=None):
-        if type(value) == bytes:
-            value = value.decode('ascii')
-
-        if convert_to == 'boolean':
-            if value in self.false_compare_list:
-                value = False
-            elif value in self.true_compare_list:
-                value = True
-            else:
-                log.warning('"{0}" cannot be converted to {1}!'.format(
-                    value,
-                    convert_to
-                ))
-        elif convert_to == 'integer':
-            try:
-                value = int(value)
-            except ValueError:
-                log.warning('"{0}" cannot be converted to {1}!'.format(
-                    value,
-                    convert_to
-                ))
-        elif convert_to == 'float':
-            try:
-                value = float(value)
-            except ValueError:
-                log.warning('"{0}" cannot be converted to {1}!'.format(
-                    value,
-                    convert_to
-                ))
-        elif convert_to == 'dict':
-            try:
-                value = json.loads(value)
-            except json.decoder.JSONDecodeError:
-                log.warning('"{0}" cannot be converted to {1}!'.format(
-                    value,
-                    convert_to
-                ))
-
-        return value
+        self.value_convert = self.value_convert_class()
 
     def get_variable(
             self,
@@ -119,8 +140,7 @@ class Confgetti(object):
                                 self.consul.connection.http.host
                             ))
 
-        # TODO: Handle conversion to wanted type of returned value or treat as string?
         if variable is not None:
-            variable = self._convert_variable(variable, convert_to)
+            variable = self.value_convert.convert(variable, convert_to)
 
         return variable if variable is not None else fallback
