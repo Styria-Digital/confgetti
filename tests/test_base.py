@@ -53,7 +53,7 @@ class ConfgettiTestCase(TestCase):
 
         variable = self.cfgtti.get_variable('MY_DUMMY_VAR')
 
-        assert variable == b'foo'
+        assert variable == 'foo'
 
     @responses.activate
     def test_get_variable_do_not_use_env(self):
@@ -67,7 +67,7 @@ class ConfgettiTestCase(TestCase):
 
         variable = self.cfgtti.get_variable('MY_DUMMY_VAR', use_env=False)
 
-        assert variable == b'foo'
+        assert variable == 'foo'
 
     def test_get_variable_do_not_use_consul(self):
         variable = self.cfgtti.get_variable('MY_DUMMY_VAR', use_consul=False)

@@ -107,23 +107,24 @@ class ValueConvert(object):
         :returns: converted value to new type or in original type
         :rtype: any
         """
-        convert_method_name = 'convert_{0}'.format(convert_to)
-        convert_method = getattr(self, convert_method_name)
-
         if type(value) == bytes:
             value = value.decode('ascii')
 
-        if convert_method:
-            try:
-                value = convert_method(value)
-            except ConvertValueError:
-                log.warning('"{0}" cannot be converted to {1}!'.format(
-                    value, convert_to
-                ))
-        else:
-            log.warning(
-                'method for "{0}" does not exist!'.format(convert_to)
-            )
+        if convert_to is not None:
+            convert_method_name = 'convert_{0}'.format(convert_to)
+            convert_method = getattr(self, convert_method_name)
+
+            if convert_method:
+                try:
+                    value = convert_method(value)
+                except ConvertValueError:
+                    log.warning('"{0}" cannot be converted to {1}!'.format(
+                        value, convert_to
+                    ))
+            else:
+                log.warning(
+                    'method for "{0}" does not exist!'.format(convert_to)
+                )
 
         return value
 
