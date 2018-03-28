@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 
 from confgetti.remote import ConsulInterface
 from confgetti.exceptions import UndefinedConnectionError
@@ -58,6 +59,14 @@ class Confgetti(object):
             try:
                 value = float(value)
             except ValueError:
+                log.warning('"{0}" cannot be converted to {1}!'.format(
+                    value,
+                    convert_to
+                ))
+        elif convert_to == 'dict':
+            try:
+                value = json.loads(value)
+            except json.decoder.JSONDecodeError:
                 log.warning('"{0}" cannot be converted to {1}!'.format(
                     value,
                     convert_to
