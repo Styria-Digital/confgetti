@@ -13,10 +13,23 @@ log = logging.getLogger(__name__)
 
 class ValueConvert(object):
     def __init__(self):
+        """
+        Declares boolean comparison lists under which
+        strings are converted to booleans.
+        """
         self.false_compare_list = ['false', 'False']
         self.true_compare_list = ['true', 'True']
 
     def convert_boolean(self, value):
+        """
+        Converts string to boolean if value found in one of compare lists.
+
+        :param value: value for conversion
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: boolean/string
+        """
         if value in self.false_compare_list:
             value = False
         elif value in self.true_compare_list:
@@ -27,6 +40,15 @@ class ValueConvert(object):
         return value
 
     def convert_integer(self, value):
+        """
+        Converts string to integer.
+
+        :param value: value for conversion
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: integer/string
+        """
         try:
             value = int(value)
         except ValueError:
@@ -35,6 +57,15 @@ class ValueConvert(object):
         return value
 
     def convert_float(self, value):
+        """
+        Converts string to float.
+
+        :param value: value for conversion
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: float/string
+        """
         try:
             value = float(value)
         except ValueError:
@@ -43,6 +74,15 @@ class ValueConvert(object):
         return value
 
     def convert_dict(self, value):
+        """
+        Converts string to dictionary.
+
+        :param value: value for conversion
+        :type value: dictionary
+
+        :returns: converted value to new type or in original type
+        :rtype: dictionary/string
+        """
         try:
             value = json.loads(value)
         except json.decoder.JSONDecodeError:
@@ -51,6 +91,22 @@ class ValueConvert(object):
         return value
 
     def convert(self, value, convert_to):
+        """
+        Seeks for existing method based on wanted type.
+        Converts value from bytes to string.
+        Runs convert method if one found, if method raises error it logs
+        warning.
+        If method does not exists it logs warning about not supported
+        conversion try.
+
+        :param value: value for conversion
+        :type value: any
+        :param value: name of wanted value type
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: any
+        """
         convert_method_name = 'convert_{0}'.format(convert_to)
         convert_method = getattr(self, convert_method_name)
 
@@ -110,6 +166,8 @@ class Confgetti(object):
         from Consul service.
         If variable is not found in environment or in Consul, it returns
         fallback value.
+        If variable exists, it runs conversion method based on wanted type
+        provided under 'convert_to' argument.
 
         :param key: key name of desired variable
         :type key: string
