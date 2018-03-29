@@ -90,7 +90,7 @@ class ValueConvert(object):
 
         return value
 
-    def convert(self, value, convert_to):
+    def convert(self, value, convert_to=None):
         """
         Seeks for existing method based on wanted type.
         Converts value from bytes to string.
@@ -112,9 +112,11 @@ class ValueConvert(object):
 
         if convert_to is not None:
             convert_method_name = 'convert_{0}'.format(convert_to)
-            convert_method = getattr(self, convert_method_name)
+            has_convert_method = hasattr(self, convert_method_name)
 
-            if convert_method:
+            if has_convert_method is True:
+                convert_method = getattr(self, convert_method_name)
+                
                 try:
                     value = convert_method(value)
                 except ConvertValueError:
