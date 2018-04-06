@@ -85,3 +85,4 @@ python_boilerplate/
 
 # Sublime Text settings
 *.sublime-*
+.pytest_cache

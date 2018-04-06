@@ -28,7 +28,7 @@ except KeyError:
     STYRIA_EXTRA_INDEX_URL = ''
 
 setup(
-    name="CONFGETTI",
+    name="confgetti",
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -70,7 +70,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'demos']),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -80,7 +80,9 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[],
+    install_requires=[
+        'python-consul'
+    ],
 
     dependency_links=[
         STYRIA_EXTRA_INDEX_URL
@@ -105,7 +107,6 @@ setup(
             'faker',
             'testfixtures',
             'mock',
-            'model_mommy',
             'pytest>=3.0',
             'pytest-cov',
             'pytest-cache',

@@ -6,4 +6,5 @@ source = confgetti
 show_missing = True
 omit =
     tests/*
-    demo/*
+    demos/*
+    setup.py
