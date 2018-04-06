@@ -4,7 +4,7 @@ import sys
 import os
 from unittest.mock import Mock, patch
 
-from confgetti.override import (
+from confgetti.load import (
     set_values, load_from_json, load_from_env, load_and_validate_config)
 
 
@@ -71,11 +71,11 @@ class LoadFromEnvTestCase(unittest.TestCase):
 class LoadAndValidateConfigTestCase(unittest.TestCase):
     def setUp(self):
         self.load_from_json_patcher = patch(
-            "confgetti.override.load_from_json")
+            "confgetti.load.load_from_json")
         self.load_from_json_mock = self.load_from_json_patcher.start()
-        self.load_from_env_patcher = patch("confgetti.override.load_from_env")
+        self.load_from_env_patcher = patch("confgetti.load.load_from_env")
         self.load_from_env_mock = self.load_from_env_patcher.start()
-        self.set_values_patcher = patch("confgetti.override.set_values")
+        self.set_values_patcher = patch("confgetti.load.set_values")
         self.set_values_mock = self.set_values_patcher.start()
         self.schema_mock = Mock()
 
