@@ -12,15 +12,15 @@ log = logging.getLogger(__name__)
 
 
 class ValueConvert(object):
-    """
-    Declares boolean comparison lists under which
-    strings are converted to booleans.
-    """
-    false_compare_list = ['false', 'False']
-    true_compare_list = ['true', 'True']
+    def __init__(self):
+        """
+        Declares boolean comparison lists under which
+        strings are converted to booleans.
+        """
+        self.false_compare_list = ['false', 'False']
+        self.true_compare_list = ['true', 'True']
 
-    @classmethod
-    def convert_bool(cls, value):
+    def convert_bool(self, value):
         """
         Converts string to boolean if value found in one of compare lists.
 
@@ -30,17 +30,16 @@ class ValueConvert(object):
         :returns: converted value to new type or in original type
         :rtype: boolean/string
         """
-        if value in cls.false_compare_list:
+        if value in self.false_compare_list:
             value = False
-        elif value in cls.true_compare_list:
+        elif value in self.true_compare_list:
             value = True
         else:
             raise ConvertValueError
 
         return value
 
-    @classmethod
-    def convert_int(cls, value):
+    def convert_int(self, value):
         """
         Converts string to integer.
 
@@ -57,8 +56,7 @@ class ValueConvert(object):
 
         return value
 
-    @classmethod
-    def convert_float(cls, value):
+    def convert_float(self, value):
         """
         Converts string to float.
 
@@ -75,11 +73,9 @@ class ValueConvert(object):
 
         return value
 
-
-    @classmethod
-    def convert_str(cls, value):
+    def convert_str(self, value):
         """
-        Converts string to float.
+        Converts value to string.
 
         :param value: value for conversion
         :type value: string
@@ -95,8 +91,7 @@ class ValueConvert(object):
         return value
 
 
-    @classmethod
-    def convert_dict(cls, value):
+    def convert_dict(self, value):
         """
         Converts string to dictionary.
 
@@ -113,8 +108,7 @@ class ValueConvert(object):
 
         return value
 
-    @classmethod
-    def convert(cls, value, convert_to=None):
+    def convert(self, value, convert_to=None):
         """
         Seeks for existing method based on wanted type.
         Converts value from bytes to string.
@@ -141,10 +135,10 @@ class ValueConvert(object):
                 convert_name = convert_to.__name__
 
             convert_method_name = 'convert_{0}'.format(convert_name)
-            has_convert_method = hasattr(cls, convert_method_name)
+            has_convert_method = hasattr(self, convert_method_name)
 
             if has_convert_method is True:
-                convert_method = getattr(cls, convert_method_name)
+                convert_method = getattr(self, convert_method_name)
                 
                 try:
                     value = convert_method(value)
@@ -160,10 +154,6 @@ class ValueConvert(object):
                 )
 
         return value
-
-
-def value_convert(value, convert_to=None):
-    return ValueConvert.convert(value, convert_to)
 
 
 class Confgetti(object):
