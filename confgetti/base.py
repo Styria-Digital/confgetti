@@ -90,7 +90,6 @@ class ValueConvert(object):
 
         return value
 
-
     def convert_dict(self, value):
         """
         Converts string to dictionary.
