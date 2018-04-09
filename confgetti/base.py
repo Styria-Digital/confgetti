@@ -83,12 +83,7 @@ class ValueConvert(object):
         :returns: converted value to new type or in original type
         :rtype: string
         """
-        try:
-            value = str(value)
-        except ValueError:
-            raise ConvertValueError
-
-        return value
+        return str(value)
 
     def convert_dict(self, value):
         """
@@ -266,7 +261,7 @@ class Confgetti(object):
                     use_env=use_env,
                     use_consul=use_consul)
 
-                if variable:
+                if variable is not None:
                     variables[key] = variable
         elif isinstance(keys, list) is True:
             for key in keys:
@@ -276,7 +271,7 @@ class Confgetti(object):
                     use_env=use_env,
                     use_consul=use_consul)
 
-                if variable:
+                if variable is not None:
                     variables[key] = variable
 
         return variables

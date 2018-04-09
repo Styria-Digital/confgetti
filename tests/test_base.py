@@ -3,7 +3,11 @@ import pytest
 import responses
 
 from unittest import TestCase, mock
-from fixtures import CONSUL_DUMMY_RESPONSE, CONSUL_DUMMY_RESPONSE_LEVELED
+from fixtures import (
+    CONSUL_DUMMY_RESPONSE,
+    CONSUL_DUMMY_RESPONSE_LEVELED,
+    make_namespaced_responses
+)
 
 from confgetti.base import Confgetti, ValueConvert
 from confgetti.exceptions import ConvertValueError
@@ -62,6 +66,11 @@ class ValueConvertTestCase(TestCase):
 
     def test_convert_value_as_string(self):
         value = self.value_convert.convert('foo')
+
+        assert value == 'foo'
+
+    def test_convert_value_as_string_with_type(self):
+        value = self.value_convert.convert('foo', convert_to=str)
 
         assert value == 'foo'
 
@@ -157,6 +166,48 @@ class ConfgettiTestCase(TestCase):
             'MY_DUMMY_VAR', convert_to=bool)
 
         assert variable is True
+
+    @responses.activate
+    def test_get_variables_with_dict_keys(self):
+        make_namespaced_responses()
+
+        variables = self.cfgtti.get_variables(
+            path='MYAPP',
+            keys={
+                'my_string_0': str,
+                'my_string_1': str,
+                'my_int': int,
+                'my_bool': bool,
+                'not_existinig': str
+            }
+        )
+
+        assert variables['my_string_0'] == 'foo'
+        assert variables['my_string_1'] == 'bar'
+        assert variables['my_int'] == 1
+        assert variables['my_bool'] is False
+        assert variables.get('not_existing') is None
+
+    @responses.activate
+    def test_get_variables_with_list_keys(self):
+        make_namespaced_responses()
+
+        variables = self.cfgtti.get_variables(
+            path='MYAPP',
+            keys=[
+                'my_string_0',
+                'my_string_1',
+                'my_int', 
+                'my_bool',
+                'not_existing'
+            ]
+        )
+
+        assert variables['my_string_0'] == 'foo'
+        assert variables['my_string_1'] == 'bar'
+        assert variables['my_int'] == '1'
+        assert variables['my_bool'] == 'false'
+        assert variables.get('not_existing') is None
 
 
 def test_get_variable_connection_failed(caplog):
