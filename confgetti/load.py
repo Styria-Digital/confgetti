@@ -10,20 +10,43 @@ def set_values(config_module_name, values):
     """
     Set given values to config module.
 
-    :param config_module: module, python module to set values to
-    :param values: dict, keys and values to set
+    :param config_module: python module to set values to
+    :type config_module: module
+    :param values: keys and values to set
+    :type values: dictionary
     """
     config_module = sys.modules[config_module_name]
     for key, value in values.items():
         setattr(config_module, key, value)
 
 
+def dict_keys_to_uppercase(dict_for_convert):
+    """
+    Converts keys of provided dict to uppercase with same value
+
+    :param dict_for_convert: dictionary whose keys will be uppercased
+    :type dict_for_convert: dictionary
+
+    :returns: dictionary with uppercase keys
+    :rtype: dictionary
+    """
+    converted_dict = {}
+
+    for key, value in dict_for_convert.items():
+        converted_dict[key.upper()] = value
+
+    return converted_dict
+
+
 def load_from_json(env_var):
     """
     Load config from json file.
 
-    :param env_var: str, name of the env var containing path to json file.
-    :returns dict: config
+    :param env_var: name of the env var containing path to json file.
+    :type env_var: string
+
+    :returns: config
+    :rtype: dictionary
     """
     path_to_json = os.environ.get(env_var)
     if path_to_json is None:
@@ -44,26 +67,45 @@ def load_from_env(env_prefix):
     """
     Load config from env variables.
 
-    :param env_prefix: str, prefix of env var names to get values from.
-    :returns dict: config
+    :param env_prefix: prefix of env var names to get values from.
+    :type env_prefix: string
+
+    :returns: config
+    :rtype: dictionary
     """
     return {key[len(env_prefix) + 1:].lower(): value
             for key, value in os.environ.items()
             if key.startswith(env_prefix) and len(key) > len(env_prefix)}
 
 
-def load_and_validate_config(config_module_name, env_var, schema):
+def load_and_validate_config(
+        config_module_name, env_var, schema, uppercase=False):
     """
     Load config, validate and set to given module.
 
-    :param config_module_name: str, name of the python module to set config to.
-    :param env_var: str, name of the env var containing path to config file.
-    :param schema: voluptuous.Schema, schema to use for config validation.
+    :param config_module_name: name of the python module to set config to.
+    :type config_module_name: string
+    :param env_var: name of the env var containing path to config file.
+    :type env_var: string
+    :param schema: schema to use for config validation.
+    :type schema: voluptuous.Schema
+    :param uppercase: should keys be returned as uppercase or no.
+    :type uppercase: boolean
     """
     try:
         config = {}
-        config.update(load_from_json(env_var))
-        config.update(load_from_env(env_var))
+
+        loaded_configs = [
+            load_from_json(env_var),
+            load_from_env(env_var)
+        ]
+
+        for loaded in loaded_configs:
+            if uppercase is True:
+                loaded = dict_keys_to_uppercase(loaded)
+            
+            config.update(loaded)
+
         config = schema(config)
         set_values(config_module_name, config)
     except:
