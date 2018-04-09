@@ -156,6 +156,9 @@ class ValueConvert(object):
 
 
 class Confgetti(object):
+    """
+    Declares classes for easier override if custom logic is needed.
+    """
     consul_interface_class = ConsulInterface
     value_convert_class = ValueConvert
 

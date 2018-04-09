@@ -20,4 +20,4 @@ _schema = Schema({
 load_and_validate_config(__name__, 'AWESOMEAPP', _schema)
 
 print(my_variable)  # should be 'something'
-print(your_variable, type(your_variable))  # should be '4' but str
+print(your_variable, type(your_variable))  # should be 4 and integer
