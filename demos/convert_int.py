@@ -6,8 +6,8 @@ os.environ['CONSUL_HOST'] = '127.0.0.1'
 
 cgtti = Confgetti()
 
-my_variable = cgtti.get_variable('my_integer_value', convert_to='integer')
-my_second_variable = cgtti.get_variable('my_bad_integer_value', convert_to='integer')
+my_variable = cgtti.get_variable('my_integer_value', convert_to=int)
+my_second_variable = cgtti.get_variable('my_bad_integer_value', convert_to=int)
 
 # should return values as integer.
 print(my_variable, type(my_variable))

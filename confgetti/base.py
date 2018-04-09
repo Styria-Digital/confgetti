@@ -20,7 +20,7 @@ class ValueConvert(object):
     true_compare_list = ['true', 'True']
 
     @classmethod
-    def convert_boolean(cls, value):
+    def convert_bool(cls, value):
         """
         Converts string to boolean if value found in one of compare lists.
 
@@ -40,7 +40,7 @@ class ValueConvert(object):
         return value
 
     @classmethod
-    def convert_integer(cls, value):
+    def convert_int(cls, value):
         """
         Converts string to integer.
 
@@ -74,6 +74,26 @@ class ValueConvert(object):
             raise ConvertValueError
 
         return value
+
+
+    @classmethod
+    def convert_str(cls, value):
+        """
+        Converts string to float.
+
+        :param value: value for conversion
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: string
+        """
+        try:
+            value = str(value)
+        except ValueError:
+            raise ConvertValueError
+
+        return value
+
 
     @classmethod
     def convert_dict(cls, value):
@@ -115,7 +135,12 @@ class ValueConvert(object):
             value = value.decode('ascii')
 
         if convert_to is not None:
-            convert_method_name = 'convert_{0}'.format(convert_to)
+            if isinstance(convert_to, str):
+                convert_name = convert_to
+            else:
+                convert_name = convert_to.__name__
+
+            convert_method_name = 'convert_{0}'.format(convert_name)
             has_convert_method = hasattr(cls, convert_method_name)
 
             if has_convert_method is True:
@@ -125,11 +150,13 @@ class ValueConvert(object):
                     value = convert_method(value)
                 except ConvertValueError:
                     log.warning('"{0}" cannot be converted to {1}!'.format(
-                        value, convert_to
+                        value, convert_name
                     ))
             else:
                 log.warning(
-                    'method for "{0}" does not exist!'.format(convert_to)
+                    'method for "{0}" does not exist!'.format(
+                        convert_name
+                    )
                 )
 
         return value
@@ -215,25 +242,36 @@ class Confgetti(object):
         return variable if variable is not None else fallback
 
     def get_variables(
-            self, path, keys, convert_map=None, use_env=True, use_consul=True):
-        convert_map = {} if convert_map is None else convert_map
+            self, path, keys=None, use_env=True, use_consul=True):
+        keys = [] if keys is None else keys
         variables = {}
 
-        for key in keys:
-            variable = self.get_variable(
-                key=key,
-                path=path,
-                convert_to=convert_map.get(key),
-                use_env=use_env,
-                use_consul=use_consul)
+        if isinstance(keys, dict) is True:
+            for key, value in keys.items():
+                variable = self.get_variable(
+                    key=key,
+                    path=path,
+                    convert_to=value,
+                    use_env=use_env,
+                    use_consul=use_consul)
 
-            if variable:
-                variables[key] = variable
+                if variable:
+                    variables[key] = variable
+        elif isinstance(keys, list) is True:
+            for key in keys:
+                variable = self.get_variable(
+                    key=key,
+                    path=path,
+                    use_env=use_env,
+                    use_consul=use_consul)
+
+                if variable:
+                    variables[key] = variable
 
         return variables
 
 
-def get_variables(path, keys, convert_map=None, use_env=True, use_consul=True):
+def get_variables(path, keys, use_env=True, use_consul=True):
     cgtti = Confgetti()
 
-    return cgtti.get_variables(path, keys, convert_map, use_env, use_consul)
+    return cgtti.get_variables(path, keys, use_env, use_consul)

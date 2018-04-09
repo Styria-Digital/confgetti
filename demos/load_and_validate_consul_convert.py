@@ -13,17 +13,11 @@ your_variable = None
 
 _schema = Schema({
     "my_variable": str,
-    "your_variable": str
+    "your_variable": int
 })
 
 
 load_and_validate_config(__name__, 'AWESOMEAPP', _schema)
 
 print(my_variable)  # should be 'something'
-print(your_variable, type(my_variable))  # should be '4' but str
-
-
-# can be converted if necessary
-your_variable = value_convert(your_variable, int)
-
-print(your_variable, type(your_variable))
+print(your_variable, type(your_variable))  # should be '4' int

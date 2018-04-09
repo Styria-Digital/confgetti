@@ -83,14 +83,13 @@ def load_from_env(env_prefix):
             if key.startswith(env_prefix) and len(key) > len(env_prefix)}
 
 
-def load_from_config_server(namespace, keys, convert_map=None):
+def load_from_config_server(namespace, keys):
     if isinstance(keys, Schema):
-        keys = keys.schema.keys()
+        keys = keys.schema
 
     return get_variables(
         path=namespace,
         keys=keys,
-        convert_map=None,
         use_env=False,
         use_consul=True)
 
@@ -99,8 +98,7 @@ def load_and_validate_config(
         config_module_name,
         env_var,
         schema,
-        uppercase=False,
-        convert_map=None):
+        uppercase=False):
     """
     Load config, validate and set to given module.
 
@@ -117,7 +115,7 @@ def load_and_validate_config(
         config = {}
 
         loaded_configs = [
-            load_from_config_server(env_var, schema, convert_map),
+            load_from_config_server(env_var, schema),
             load_from_json(env_var),
             load_from_env(env_var),
         ]
