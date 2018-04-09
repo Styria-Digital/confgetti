@@ -234,7 +234,26 @@ class Confgetti(object):
         return variable if variable is not None else fallback
 
     def get_variables(
-            self, path, keys=None, use_env=True, use_consul=True):
+            self, path=None, keys=None, use_env=True, use_consul=True):
+        """
+        Gets multiple variables from environment or consul, based on path.
+        Supports dict and list types `keys` argument.
+        In case of dict, it uses key value as conversion type,
+        in case of list it just passes each key to function for getting
+        variable, and everything returned is string.
+
+        :param path: location of variable on Consul storage.
+        :type path: string/None
+        :param keys: set of keys whose values should be returned back
+        :type keys: dict/list
+        :param use_env: Should method look into environment for variable or no
+        :type use_env: boolean
+        :param use_consul: Should method look into consul for variable or no
+        :type use_consul: boolean
+
+        :returns: dictionary including fetched variables.
+        :rtype: dict
+        """
         keys = [] if keys is None else keys
         variables = {}
 
@@ -264,6 +283,22 @@ class Confgetti(object):
 
 
 def get_variables(path, keys, use_env=True, use_consul=True):
+    """
+    Shorthand function for simple Confgetti setup that returns desired
+    variables in dictionary.
+
+    :param path: location of variable on Consul storage.
+    :type path: string/None
+    :param keys: set of keys whose values should be returned back
+    :type keys: dict/list
+    :param use_env: Should method look into environment for variable or no
+    :type use_env: boolean
+    :param use_consul: Should method look into consul for variable or no
+    :type use_consul: boolean
+
+    :returns: dictionary including fetched variables.
+    :rtype: dict
+    """
     cgtti = Confgetti()
 
     return cgtti.get_variables(path, keys, use_env, use_consul)

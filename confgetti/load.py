@@ -84,6 +84,16 @@ def load_from_env(env_prefix):
 
 
 def load_from_config_server(namespace, keys):
+    """
+    Loads configuration from configuration server.
+    If provided 'keys' value is instance of voluptuous.Schema, it assings
+    `schema` dict from it as 'keys' variable.
+
+    :param namespace: namespace under which app configuration is located.
+    :type namespace: string
+    :param keys: Set of keys for variables lookup.
+    :type keys: dictionary/list/voluptuous.Schema
+    """
     if isinstance(keys, Schema):
         keys = keys.schema
 
