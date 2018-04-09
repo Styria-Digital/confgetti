@@ -81,7 +81,8 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'python-consul'
+        'python-consul',
+        'voluptuous'
     ],
 
     dependency_links=[
@@ -102,7 +103,7 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         'dev': [
-            'voluptuous'
+
         ],
         'test': [
             'responses',
@@ -114,8 +115,7 @@ setup(
             'pytest-cache',
             'pytest-sugar',
             'pytest-runner',
-            'tox',
-            'voluptuous'
+            'tox'
         ],
         'docs': [
             'sphinx',

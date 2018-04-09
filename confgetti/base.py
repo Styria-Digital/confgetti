@@ -12,15 +12,15 @@ log = logging.getLogger(__name__)
 
 
 class ValueConvert(object):
-    def __init__(self):
-        """
-        Declares boolean comparison lists under which
-        strings are converted to booleans.
-        """
-        self.false_compare_list = ['false', 'False']
-        self.true_compare_list = ['true', 'True']
+    """
+    Declares boolean comparison lists under which
+    strings are converted to booleans.
+    """
+    false_compare_list = ['false', 'False']
+    true_compare_list = ['true', 'True']
 
-    def convert_boolean(self, value):
+    @classmethod
+    def convert_boolean(cls, value):
         """
         Converts string to boolean if value found in one of compare lists.
 
@@ -30,16 +30,17 @@ class ValueConvert(object):
         :returns: converted value to new type or in original type
         :rtype: boolean/string
         """
-        if value in self.false_compare_list:
+        if value in cls.false_compare_list:
             value = False
-        elif value in self.true_compare_list:
+        elif value in cls.true_compare_list:
             value = True
         else:
             raise ConvertValueError
 
         return value
 
-    def convert_integer(self, value):
+    @classmethod
+    def convert_integer(cls, value):
         """
         Converts string to integer.
 
@@ -56,7 +57,8 @@ class ValueConvert(object):
 
         return value
 
-    def convert_float(self, value):
+    @classmethod
+    def convert_float(cls, value):
         """
         Converts string to float.
 
@@ -73,7 +75,8 @@ class ValueConvert(object):
 
         return value
 
-    def convert_dict(self, value):
+    @classmethod
+    def convert_dict(cls, value):
         """
         Converts string to dictionary.
 
@@ -90,7 +93,8 @@ class ValueConvert(object):
 
         return value
 
-    def convert(self, value, convert_to=None):
+    @classmethod
+    def convert(cls, value, convert_to=None):
         """
         Seeks for existing method based on wanted type.
         Converts value from bytes to string.
@@ -112,10 +116,10 @@ class ValueConvert(object):
 
         if convert_to is not None:
             convert_method_name = 'convert_{0}'.format(convert_to)
-            has_convert_method = hasattr(self, convert_method_name)
+            has_convert_method = hasattr(cls, convert_method_name)
 
             if has_convert_method is True:
-                convert_method = getattr(self, convert_method_name)
+                convert_method = getattr(cls, convert_method_name)
                 
                 try:
                     value = convert_method(value)
@@ -129,6 +133,10 @@ class ValueConvert(object):
                 )
 
         return value
+
+
+def value_convert(value, convert_to=None):
+    return ValueConvert.convert(value, convert_to)
 
 
 class Confgetti(object):
@@ -205,3 +213,27 @@ class Confgetti(object):
             variable = self.value_convert.convert(variable, convert_to)
 
         return variable if variable is not None else fallback
+
+    def get_variables(
+            self, path, keys, convert_map=None, use_env=True, use_consul=True):
+        convert_map = {} if convert_map is None else convert_map
+        variables = {}
+
+        for key in keys:
+            variable = self.get_variable(
+                key=key,
+                path=path,
+                convert_to=convert_map.get(key),
+                use_env=use_env,
+                use_consul=use_consul)
+
+            if variable:
+                variables[key] = variable
+
+        return variables
+
+
+def get_variables(path, keys, convert_map=None, use_env=True, use_consul=True):
+    cgtti = Confgetti()
+
+    return cgtti.get_variables(path, keys, convert_map, use_env, use_consul)
