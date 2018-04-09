@@ -101,7 +101,9 @@ setup(
     # for example:
     # $ pip install -e .[dev,test]
     extras_require={
-        'dev': [],
+        'dev': [
+            'voluptuous'
+        ],
         'test': [
             'responses',
             'faker',
@@ -112,7 +114,8 @@ setup(
             'pytest-cache',
             'pytest-sugar',
             'pytest-runner',
-            'tox'
+            'tox',
+            'voluptuous'
         ],
         'docs': [
             'sphinx',
