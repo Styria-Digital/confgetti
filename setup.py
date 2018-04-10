@@ -115,8 +115,7 @@ setup(
             'pytest-cache',
             'pytest-sugar',
             'pytest-runner',
-            'tox',
-            'bumpversion'
+            'tox'
         ],
         'docs': [
             'sphinx',
