@@ -103,7 +103,7 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         'dev': [
-
+            'bumpversion'
         ],
         'test': [
             'responses',
@@ -115,7 +115,8 @@ setup(
             'pytest-cache',
             'pytest-sugar',
             'pytest-runner',
-            'tox'
+            'tox',
+            'bumpversion'
         ],
         'docs': [
             'sphinx',
