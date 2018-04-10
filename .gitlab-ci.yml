@@ -20,6 +20,7 @@ test_code:
 bump_version:
   stage: bump
   script:
+    - pip install bumpversion
     - bumpversion patch
 
 # test_build:
