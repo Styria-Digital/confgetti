@@ -1,5 +1,5 @@
 ********
-CONFGETTI
+CONFGETTI version 0.1.0
 ********
 
 .. image:: https://gl.sds.rocks/gdni/confgetti/badges/develop/build.svg
