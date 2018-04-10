@@ -105,6 +105,14 @@ class LoadAndValidateConfigTestCase(unittest.TestCase):
         self.set_values_mock.assert_called_once_with(
             "conf", self.schema_mock.return_value)
 
+    def test_load_and_validate_config_uppercase_keys(self):
+        self.load_from_json_mock.return_value = {"b": "abc"}
+        self.load_from_env_mock.return_value = {"a": "def", "c": 3}
+        load_and_validate_config("conf", "CONF", self.schema_mock, True)
+
+        self.schema_mock.assert_called_once_with(
+            {"A": "def", "B": "abc", "C": 3})
+
     def test_validation_error(self):
         self.load_from_json_mock.return_value = {}
         self.load_from_env_mock.return_value = {}
