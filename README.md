@@ -1,6 +1,6 @@
 # CONFGETTI
 
-Tool for configuration and variables managment.
+#### Tool for configuration and variables managment.
 
 [![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
 
