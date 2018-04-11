@@ -4,7 +4,7 @@ import sys
 import os
 import responses
 
-from voluptuous import Schema
+from voluptuous import Schema, Coerce
 from unittest.mock import Mock, patch
 
 
@@ -172,6 +172,28 @@ class LoadFromConfigServerTestCase(unittest.TestCase):
         })
 
         variables = load_from_config_server(namespace='MYAPP', keys=_schema)
+
+        assert variables['my_string_0'] == 'foo'
+        assert variables['my_string_1'] == 'bar'
+        assert variables['my_int'] == '1'
+        assert variables['my_bool'] == 'false'
+        assert variables.get('not_existing') is None
+
+    @unittest.mock.patch.dict(os.environ, {
+        'CONSUL_HOST': 'foobar'
+    })
+    @responses.activate
+    def test_load_from_config_server_with_conversion_dict(self):
+        make_namespaced_responses()
+        convert_to = {
+            'my_string_0': str,
+            'my_string_1': str,
+            'my_int': int,
+            'my_bool': bool,
+            'not_existinig': str
+        }
+
+        variables = load_from_config_server(namespace='MYAPP', keys=convert_to)
 
         assert variables['my_string_0'] == 'foo'
         assert variables['my_string_1'] == 'bar'

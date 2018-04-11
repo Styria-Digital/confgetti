@@ -1,6 +1,6 @@
 import os
 
-from voluptuous import Schema
+from voluptuous import Schema, Coerce
 
 from confgetti import load_and_validate_config
 
@@ -13,7 +13,7 @@ your_variable = None
 
 _schema = Schema({
     "my_variable": str,
-    "your_variable": int
+    "your_variable": Coerce(int)
 })
 
 

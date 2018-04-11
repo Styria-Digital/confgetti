@@ -95,7 +95,7 @@ def load_from_config_server(namespace, keys):
     :type keys: dictionary/list/voluptuous.Schema
     """
     if isinstance(keys, Schema):
-        keys = keys.schema
+        keys = list(keys.schema.keys())
 
     return get_variables(
         path=namespace,
