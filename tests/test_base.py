@@ -238,6 +238,7 @@ class ConfgettiTestCase(TestCase):
                 keys='wrong'
             )
 
+
 def test_get_variable_connection_failed(caplog):
     cfgtti = Confgetti()
     variable = cfgtti.get_variable('MY_DUMMY_VAR')
