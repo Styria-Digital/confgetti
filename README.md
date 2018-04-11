@@ -8,7 +8,7 @@
 Fetch variables for your application easily from **Consul KV** -> **config\*.json**-> **environment.** via simple python method/s!
 
 
-## The problem
+## The Problem
 
 Modern web app development and deployment oftenly considers isolated app enviroments which are easily manageble, and quickly delpoyed with software as VMs or Docker.
 
@@ -61,3 +61,7 @@ Each time you need to pass those 12 variables to `docker` command, and even with
 
 Here we have just one simple web app, imagine size of problem on some cluster of web apps. Your DevOps(oftenly you) will hate you.
 
+
+## The Solution
+
+Here comes **Confgetti** to save a day!
