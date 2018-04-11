@@ -86,17 +86,12 @@ def load_from_env(env_prefix):
 def load_from_config_server(namespace, keys):
     """
     Loads configuration from configuration server.
-    If provided 'keys' value is instance of voluptuous.Schema, it assings
-    `schema` dict from it as 'keys' variable.
 
     :param namespace: namespace under which app configuration is located.
     :type namespace: string
     :param keys: Set of keys for variables lookup.
-    :type keys: dictionary/list/voluptuous.Schema
+    :type keys: dictionary/list
     """
-    if isinstance(keys, Schema):
-        keys = list(keys.schema.keys())
-
     return get_variables(
         path=namespace,
         keys=keys,
@@ -107,7 +102,8 @@ def load_from_config_server(namespace, keys):
 def load_and_validate_config(
         config_module_name,
         env_var,
-        schema,
+        schema=None,
+        keys=None,
         uppercase=False):
     """
     Load config, validate and set to given module.
@@ -121,11 +117,14 @@ def load_and_validate_config(
     :param uppercase: should keys be returned as uppercase or no.
     :type uppercase: boolean
     """
+    if keys is None and isinstance(schema, Schema):
+        keys = list(schema.schema.keys())
+
     try:
         config = {}
 
         loaded_configs = [
-            load_from_config_server(env_var, schema),
+            load_from_config_server(env_var, keys),
             load_from_json(env_var),
             load_from_env(env_var),
         ]
@@ -136,7 +135,9 @@ def load_and_validate_config(
 
             config.update(loaded)
 
-        config = schema(config)
+        if schema is not None:
+            config = schema(config)
+
         set_values(config_module_name, config)
     except:
         log.error("Config error", exc_info=True)

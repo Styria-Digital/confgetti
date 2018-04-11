@@ -1,5 +1,7 @@
 import os
 
+from voluptuous import Schema, Coerce
+
 from confgetti import load_and_validate_config
 
 
@@ -9,13 +11,13 @@ os.environ['CONSUL_HOST'] = '127.0.0.1'
 my_variable = None
 your_variable = None
 
-convert_dict = {
+_schema = Schema({
     "my_variable": str,
-    "your_variable": int
-}
+    "your_variable": Coerce(int)
+})
 
 
-load_and_validate_config(__name__, 'AWESOMEAPP', keys=convert_dict)
+load_and_validate_config(__name__, 'AWESOMEAPP', _schema)
 
 print(my_variable)  # should be 'something'
 print(your_variable, type(your_variable))  # should be 4 and integer

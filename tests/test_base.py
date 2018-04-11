@@ -209,6 +209,34 @@ class ConfgettiTestCase(TestCase):
         assert variables['my_bool'] == 'false'
         assert variables.get('not_existing') is None
 
+    @responses.activate
+    def test_get_variables_with_list_keys(self):
+        make_namespaced_responses()
+
+        variables = self.cfgtti.get_variables(
+            path='MYAPP',
+            keys=[
+                'my_string_0',
+                'my_string_1',
+                'my_int', 
+                'my_bool',
+                'not_existing'
+            ]
+        )
+
+        assert variables['my_string_0'] == 'foo'
+        assert variables['my_string_1'] == 'bar'
+        assert variables['my_int'] == '1'
+        assert variables['my_bool'] == 'false'
+        assert variables.get('not_existing') is None
+
+    @responses.activate
+    def test_get_variables_with_wrong_type(self):
+        with self.assertRaises(TypeError):
+            variables = self.cfgtti.get_variables(
+                path='MYAPP',
+                keys='wrong'
+            )
 
 def test_get_variable_connection_failed(caplog):
     cfgtti = Confgetti()

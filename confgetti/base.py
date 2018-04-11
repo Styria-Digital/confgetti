@@ -273,6 +273,8 @@ class Confgetti(object):
 
                 if variable is not None:
                     variables[key] = variable
+        else:
+            raise TypeError('"keys" argument should be list or dict')
 
         return variables
 

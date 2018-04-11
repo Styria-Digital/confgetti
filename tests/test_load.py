@@ -86,6 +86,9 @@ class LoadAndValidateConfigTestCase(unittest.TestCase):
         self.load_from_json_mock = self.load_from_json_patcher.start()
         self.load_from_env_patcher = patch("confgetti.load.load_from_env")
         self.load_from_env_mock = self.load_from_env_patcher.start()
+        self.load_from_config_server_patcher = patch(
+            "confgetti.load.load_from_config_server")
+        self.load_from_config_server_mock = self.load_from_config_server_patcher.start()
         self.set_values_patcher = patch("confgetti.load.set_values")
         self.set_values_mock = self.set_values_patcher.start()
         self.schema_mock = Mock()
@@ -119,10 +122,44 @@ class LoadAndValidateConfigTestCase(unittest.TestCase):
     def test_load_and_validate_config_uppercase_keys(self):
         self.load_from_json_mock.return_value = {"b": "abc"}
         self.load_from_env_mock.return_value = {"a": "def", "c": 3}
-        load_and_validate_config("conf", "CONF", self.schema_mock, True)
+        load_and_validate_config(
+            "conf", "CONF", self.schema_mock, uppercase=True
+        )
 
         self.schema_mock.assert_called_once_with(
             {"A": "def", "B": "abc", "C": 3})
+
+    def test_load_and_validate_with_schema(self):
+        self.load_from_json_mock.return_value = {}
+        self.load_from_env_mock.return_value = {}
+        self.load_from_config_server_mock.return_value = {"a": "def", "b": "3"}
+
+        _schema = Schema({
+            "a": str,
+            "b": Coerce(int)
+        })
+        
+        load_and_validate_config(
+            "conf", "CONF", _schema
+        )
+    
+        self.set_values_mock.assert_called_once_with(
+            'conf', {'a': 'def', 'b': 3}
+        )
+
+    def test_load_and_validate_with_list_keys_but_no_schema(self):
+        self.load_from_json_mock.return_value = {}
+        self.load_from_env_mock.return_value = {}
+        self.load_from_config_server_mock.return_value = {"a": "def", "b": "z"}
+        
+        load_and_validate_config(
+            "conf", "CONF", keys=['a', 'b']
+        )
+
+        self.schema_mock.assert_not_called()
+        self.set_values_mock.assert_called_once_with(
+            'conf', {'a': 'def', 'b': 'z'}
+        )
 
     def test_validation_error(self):
         self.load_from_json_mock.return_value = {}
@@ -150,28 +187,6 @@ class LoadFromConfigServerTestCase(unittest.TestCase):
                 'not_existing'
             ]
         )
-
-        assert variables['my_string_0'] == 'foo'
-        assert variables['my_string_1'] == 'bar'
-        assert variables['my_int'] == '1'
-        assert variables['my_bool'] == 'false'
-        assert variables.get('not_existing') is None
-
-    @unittest.mock.patch.dict(os.environ, {
-        'CONSUL_HOST': 'foobar'
-    })
-    @responses.activate
-    def test_load_from_config_server_with_voluptuous_Schema(self):
-        make_namespaced_responses()
-        _schema = Schema({
-            'my_string_0': str,
-            'my_string_1': str,
-            'my_int': int,
-            'my_bool': bool,
-            'not_existinig': str
-        })
-
-        variables = load_from_config_server(namespace='MYAPP', keys=_schema)
 
         assert variables['my_string_0'] == 'foo'
         assert variables['my_string_1'] == 'bar'
