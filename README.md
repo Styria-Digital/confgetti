@@ -90,7 +90,8 @@ When you ask for variable with `get_variable`, lookup is made in following order
 2. environment
 
 So if you have `MY_VARIABLE` key stored in consul and in environment, Confgetti will return value
-stored in environment (if you do not tell Confgetti otherwise.).
+stored in environment (if you do not tell Confgetti otherwise.).  
+Confgetti does not punish you if you do not have Consul server running, it will still return value from environment variable!
 
 Slightly *high-level* function `load_and_validate_config`, that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
 source, local json configuration file in following order:
