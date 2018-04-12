@@ -10,7 +10,25 @@ Fetch variables for your application easily from **Consul KV** -> **config\*.jso
 ## Content
 
 1. [Installation and Quick start](#installation-and-quick-start)
-5. [Demos](#demos)
+    1. [Install with pip](#install-confgetti-with-pip)
+    2. [Get single variable](#get-single-variable)
+    3. [Get multiple variables](#get-multiple-variables)
+    4. [Override module variables](#override-current-module-variables)
+2. [The Problem](#the-problem)
+    1. [King of n00bs way](#1-king-of-n00bs-way)
+    2. [Slightly less n00b way](#2-slightly-less-n00b-way)
+3. [The Solution](#the-solution)
+4. [Consul settings](#consul-settings)
+    1. [Through environment variables](#through-environment-variables)
+    2. [Upon initialization](#upon-initialization)
+5. [API](#api)
+    1. [Shorthand methods](#shorthand-methods)
+        1. [get_variables](#confgettiget_variablespath-keys-use_envtrue-use_consultrue)
+        2. [load_and_validate_config](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse)
+    2. [Confgetti](#confgetticonfgetti-class)
+        1. [get_variable](#confgetticonfgettiget_variablekey-pathnone-fallbacknone-convert_tonone-use_envtrue-use_consultrue)
+        2. [get_variables](#confgetticonfgettiget_variablespathnone-keysnone-use_envtrue-use_consultrue)
+6. [Demos](#demos)
 
 
 ## Installation and Quick start
