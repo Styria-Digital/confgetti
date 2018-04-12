@@ -18,6 +18,7 @@ Fetch variables for your application easily from **Consul KV** -> **config\*.jso
     1. [King of n00bs way](#1-king-of-n00bs-way)
     2. [Slightly less n00b way](#2-slightly-less-n00b-way)
 3. [The Solution](#the-solution)
+    1. [Logic flow](#logic-flow)
 4. [Consul settings](#consul-settings)
     1. [Through environment variables](#through-environment-variables)
     2. [Upon initialization](#upon-initialization)
@@ -101,10 +102,8 @@ print(your_variable  # should be integer and not None
 
 ## The Problem
 
-Modern web app development and deployment oftenly considers isolated app enviroments which are easily manageble, and quickly delpoyed with software as VMs or Docker.  
-Everything hardens ands slows down as your app gets bigger and needs more and more *settings* variables declared in you configuration modules or classes, especially for those who manage production state of app or multiple apps. 
-
-Lets call them DevOps.
+Modern web app development and deployment oftenly considers isolated app enviroments which are easily manageble, and quickly delpoyed with software as **VM**s or **Docker**.  
+As your app gets bigger and needs more and more *settings* variables declared in you configuration modules or classes, management of those variables becomes frustrating, especially for those who manage production state of app or multiple apps and do not care of actually application code.
 
 Imagine simple web application that uses database for data storage, cache mechanism and AWS S3 Bucket static file storage. Oh yes, and our app is Dockerized.  
 To run that app successfully usually you need to pass configruation variables to methods/drivers that are communicating with those services. So at least, you'll need:
@@ -133,7 +132,7 @@ How you deal a problem like a *n00b*?
 
 You could always leave those variable hardcoded to your configruation module, but prehaps, what if suddenly you need to switch to different AWS user and use different bucket? 
 
-We even did not touched application code or logic actually but we need to:
+We even do not touch application code or logic actually but we need to:
 1. push those changes to our repository (wait for Merge request, eh?)
 2. build new Docker image
 3. deploy new image
@@ -142,13 +141,13 @@ Whole deployment process just because  of those **3** simple variables. Not to m
 
 #### 2. "Slightly less n00b" way
 
-Most common way of variables management, especially in Docker world, is to assign necessary varibles into container environment via Docker runner and then getting them from application by checking value of some agreed and known environment key name.
+Most common way of variables management, especially in Docker world, is to assign necessary variables into container environment via Docker runner and then get them from application code by checking value of some agreed and known environment key name.
 
 If we put aside security problem of such approach (yes, environment variables could be readable by malicious user), there is still one more common and frustrating problem: A bunch of sensitive variables that need to be correctly passed each time as our Docker container is restarted or redeployed.
 
 Each time you need to pass those **12** variables to `docker` command, and even with `docker-compose` you still need to declare those variables in `docker-compose.yml` file which returns us to previous **"King of n00bs" way**.
 
-Here we have just one simple web app, imagine size of problem on some cluster of web apps. Your DevOps(oftenly you) will hate you.
+Do not forget, we are dealing with just one simple web app. Imagine a size of the problem on some cluster of web apps. Your DevOps(in most cases you) will hate you.
 
 
 ## The Solution
@@ -156,7 +155,7 @@ Here we have just one simple web app, imagine size of problem on some cluster of
 Here comes **Confgetti** to save a day!
 
 **Confgetti** uses [Consul](https://www.consul.io) key/value storage for setting and getting your variables.
-If you have running consul instance and `MY_VARIABLE` exists in its KV, you can get it like:
+If you have running consul instance and `MY_VARIABLE` exists in its KV, you can get it simple as that:
 
 ```python
 from Confgetti import get_variable
@@ -166,13 +165,16 @@ cgtti = Confgetti({'host': 'consul_instance_host'})
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-Maybe you still want to store some or all variables into environment? No problem!
+Maybe you still want to store some or all variables into environment?  
+No problem!
 **Confgetti** can get variable from your environment also.
 
 So now we set environment variable `MY_VARIABLE` with some custom value.  
 How to get variable from environment?  
 With same `get_variable` method used in example above.  
 No need for extra setup, custom code or monkey patching and it is beacuse of **Confgetti** efficient logic flow.
+
+### Logic flow
 
 **Confgetti** tries to fetch variable from two different sources in order, overriding previous source result. 
 When you ask for variable with `get_variable`, lookup is made in following order:
@@ -184,7 +186,7 @@ So if you have `MY_VARIABLE` key stored in consul and in environment, **Confgett
 stored in environment (if you do not tell **Confgetti** otherwise.).  
 **Confgetti** does not punish you if you do not have Consul server running, it will still return value from environment variable!
 
-Slightly *high-level* function `load_and_validate_config`, that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
+Slightly *high-level* function [load_and_validate_config](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse), that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
 source, local json configuration file in following order:
 
 1. **Consul**
@@ -341,6 +343,7 @@ Used for overriding current module variables. Usually it is used with [voluptuou
 **Example:**  
 
 - *variables must be defined under `MY_APP` namespace in consul*
+- *if `configuration.json` is used, enviroment variable `MY_APP` must be set with path to the file
 
 ```python
 # my_app/config.py
@@ -395,7 +398,7 @@ my_variable = cgtti.get_variable('my_variable')
 
 #### confgetti.Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)
 
-This is internal method that is used for `confgetti.get_variables` shorthand. Arguments and logic is exactly the same.
+This is internal method that is used for [get_variables](#confgettiget_variablespath-keys-use_envtrue-use_consultrue) shorthand. Arguments and logic is exactly the same.
 
 **Example:**  
 
