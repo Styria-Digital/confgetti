@@ -85,18 +85,18 @@ Lets call them DevOps.
 Imagine simple web application that uses database for data storage, cache mechanism and AWS S3 Bucket static file storage. Oh yes, and our app is Dockerized.  
 To run that app successfully usually you need to pass configruation variables to methods/drivers that are communicating with those services. So at least, you'll need:
 
-1. Database
+1. **Database**
     1. Database name
     2. Host
     3. Username
     4. Password
     5. Port?
-2. Cache
+2. **Cache**
     1. Host
     2. Index?
     3. Username?
     4. Password?
-3. S3 Bucket
+3. **S3 Bucket**
     1. AWS secret access key
     2. AWS access key id
     3. Bucket name
@@ -153,8 +153,8 @@ No need for extra setup, custom code or monkey patching and it is beacuse of Con
 *Confgetti* tries to fetch variable from two different sources in order, overriding previous source result. 
 When you ask for variable with `get_variable`, lookup is made in following order:
 
-1. Consul
-2. environment
+1. **Consul**
+2. **environment**
 
 So if you have `MY_VARIABLE` key stored in consul and in environment, Confgetti will return value
 stored in environment (if you do not tell Confgetti otherwise.).  
@@ -163,9 +163,9 @@ Confgetti does not punish you if you do not have Consul server running, it will 
 Slightly *high-level* function `load_and_validate_config`, that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
 source, local json configuration file in following order:
 
-1. Consul
-3. config.json
-3. environment
+1. **Consul**
+3. **config.json**
+3. **environment**
 
 With same *override* logic.
 
@@ -184,9 +184,9 @@ scheme: http
 
 Connection settings can be configured in 2 ways:
 
-### 1. Through environment variables
+### Through environment variables
 
-#### 1. Available environment variables:
+#### Available environment variables:
 
 ```
 CONSUL_HOST - default: 'consul'
@@ -196,12 +196,11 @@ CONSUL_TOKEN - default: None
 CONSUL_DC - default: None
 ```
 
-#### 2. Example
+#### Example
 
 You have running consul instance on `my_host`, port `7500`, and on secured `https`,
 all you need to set following environment variables:
 
-**Environment**
 ```
 CONSUL_HOST=my_host
 CONSUL_PORT=7500
@@ -211,7 +210,6 @@ CONSUL_SCHEME=https
 And you do not have to pass any configuration dictionary when initializing Confgetti, because
 it will read settings from environment.
 
-**Application**
 ```python
 # my_app/config.py
 from Confgetti import get_variable
