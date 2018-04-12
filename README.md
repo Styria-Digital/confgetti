@@ -7,6 +7,12 @@
 
 Fetch variables for your application easily from **Consul KV** -> **config\*.json**-> **environment.** via simple python method/s!
 
+## Content
+
+1. [Installation and Quick start](#installation-and-quick-start)
+5. [Demos](#demos)
+
+
 ## Installation and Quick start
 
 ### Install **Confgetti** with `pip`:
@@ -385,4 +391,4 @@ my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 
 ## Demos
 
-Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scrips.
+Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scripts.
