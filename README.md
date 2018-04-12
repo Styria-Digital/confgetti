@@ -385,4 +385,4 @@ my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 
 ## Demos
 
-Check (demos)(https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages.
+Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scrips.
