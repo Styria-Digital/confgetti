@@ -288,29 +288,29 @@ This is shorthand function for `confgetti.Confgetti.get_variables`.
 Used for fetching multiple variables at once from **Consul** or environment. Returns dictionary for fetched variables.
 
 **Arguments:**  
-**path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.
-**keys** - list of keys under which variables are defined. This can be plain `list` of names, or `dict` where key is key name of variable and value type of value that should be returned. By default, variables are returned as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`. For example:
+- **path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.
+- **keys** - list of keys under which variables are defined. This can be plain `list` of names, or `dict` where key is key name of variable and value type of value that should be returned. By default, variables are returned as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`. For example:
 
-```python
-my_variables_dict = cgtti.get_variables(keys=[
-    'MY_VARIABLE',
-    'YOUR_VARIABLE',
-    'OUR_VARIABLE'
-])
-```
+    ```python
+    my_variables_dict = cgtti.get_variables(keys=[
+        'MY_VARIABLE',
+        'YOUR_VARIABLE',
+        'OUR_VARIABLE'
+    ])
+    ```
 
-or
+    or
 
-```python
-my_variables_dict = cgtti.get_variables(keys={
-    'MY_VARIABLE': str,
-    'YOUR_VARIABLE': bool,
-    'OUR_VARIABLE': int
-})
-```
+    ```python
+    my_variables_dict = cgtti.get_variables(keys={
+        'MY_VARIABLE': str,
+        'YOUR_VARIABLE': bool,
+        'OUR_VARIABLE': int
+    })
+    ```
 
-**use_env**(optional) - should **Confgetti** look to environment or no?  
-**use_consul**(optional) - should **Confgetti** look to **Consul** or no?
+- **use_env**(optional) - should **Confgetti** look to environment or no?  
+- **use_consul**(optional) - should **Confgetti** look to **Consul** or no?
 
 
 **Example:**  
@@ -332,11 +332,11 @@ variables = get_variables(path='AWESOMEAPP', keys=convert_dict)
 Used for overriding current module variables. Usually it is used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html) as `schema` argument for validation, but can be used without it, or with some custom method.
 
 **Arguments:**  
-**config_module_name** - Usually `__name__` variable from current configuration file  
-**env_var** - Prefix of variables in environment, namespace of variables location in **CONSUL** and key under which `json` configuration path is stored in environment. See example for better understanding.  
-**schema**(optional) - Pass custom method here that should return `dict` of variables which will be glued to module later. Usually used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html).  
-**keys**(optional) - variable names list or dict with desired type. If you do not pass this, and you pass `voluptuous.Schema` under `schema` argument, method will return variables declared dict passed to `Schema` instance.  
-**uppercase**(optional) - By default, variables are *glued* to module in lowercase. If this is passed as `True`, variables will be *glued* in uppercase.  
+- **config_module_name** - Usually `__name__` variable from current configuration file  
+- **env_var** - Prefix of variables in environment, namespace of variables location in **CONSUL** and key under which `json` configuration path is stored in environment. See example for better understanding.  
+- **schema**(optional) - Pass custom method here that should return `dict` of variables which will be glued to module later. Usually used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html).  
+- **keys**(optional) - variable names list or dict with desired type. If you do not pass this, and you pass `voluptuous.Schema` under `schema` argument, method will return variables declared dict passed to `Schema` instance.  
+- **uppercase**(optional) - By default, variables are *glued* to module in lowercase. If this is passed as `True`, variables will be *glued* in uppercase.  
 
 **Example:**  
 
@@ -376,12 +376,12 @@ print(your_variable  # should be integer and not None
 Used for fetching single variable from **Consul** or environment. Returns single variable value
 
 **Arguments:**  
-**key** - key under which variable is defined  
-**path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.  
-**fallback**(optional) - what is returned if variable is not found  
-**convert_to**(optional) - should variable be converted to certain type? If type is passed, **Confgetti** tries to convert variable to passed type. By default, variable is returend as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`
-**use_env**(optional) - should **Confgetti** look to environment or no?  
-**use_consul**(optional) - should **Confgetti** look to **Consul** or no?  
+- **key** - key under which variable is defined  
+- **path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.  
+- **fallback**(optional) - what is returned if variable is not found  
+- **convert_to**(optional) - should variable be converted to certain type? If type is passed, **Confgetti** tries to convert variable to passed type. By default, variable is returend as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`
+- **use_env**(optional) - should **Confgetti** look to environment or no?  
+- **use_consul**(optional) - should **Confgetti** look to **Consul** or no?  
 
 **Example:**  
 
