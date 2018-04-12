@@ -300,7 +300,6 @@ convert_dict = {
     "my_env_variable": str
 }
 
-
 variables = get_variables(path='AWESOMEAPP', keys=convert_dict)
 ```
 
@@ -314,6 +313,37 @@ Used for overriding current module variables. Usually it is used with [voluptuou
 **schema**(optional) - Pass custom method here that should return `dict` of variables which will be glued to module later. Usually used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html).  
 **keys**(optional) - variable names list or dict with desired type. If you do not pass this, and you pass `voluptuous.Schema` under `schema` argument, method will return variables declared dict passed to `Schema` instance.  
 **uppercase**(optional) - By default, variables are *glued* to module in lowercase. If this is passed as `True`, variables will be *glued* in uppercase.  
+
+**Example:**  
+
+1. variables under `MY_APP` namespace in consul
+
+```python
+# my_app/config.py
+from voluptuous import Schema, Coerce
+from confgetti import load_and_validate_config
+
+
+my_variable = None
+your_variable = None
+
+_schema = Schema({
+    "my_variable": str,
+    "your_variable": Coerce(int)
+})
+
+
+load_and_validate_config(__name__, 'MY_APP', _schema)
+
+```
+```python
+# my_app/some_logic.py
+from .config import my_variable, your_variable
+
+print(my_variable)  # should be string and not None
+print(your_variable  # should be integer and not None
+
+```
 
 ### confgetti.Confgetti class
 
