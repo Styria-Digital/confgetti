@@ -3,6 +3,11 @@ import sys
 import os
 import json
 
+from voluptuous import Schema
+
+from confgetti.base import get_variables
+
+
 log = logging.getLogger(__name__)
 
 
@@ -78,8 +83,28 @@ def load_from_env(env_prefix):
             if key.startswith(env_prefix) and len(key) > len(env_prefix)}
 
 
+def load_from_config_server(namespace, keys):
+    """
+    Loads configuration from configuration server.
+
+    :param namespace: namespace under which app configuration is located.
+    :type namespace: string
+    :param keys: Set of keys for variables lookup.
+    :type keys: dictionary/list
+    """
+    return get_variables(
+        path=namespace,
+        keys=keys,
+        use_env=False,
+        use_consul=True)
+
+
 def load_and_validate_config(
-        config_module_name, env_var, schema, uppercase=False):
+        config_module_name,
+        env_var,
+        schema=None,
+        keys=None,
+        uppercase=False):
     """
     Load config, validate and set to given module.
 
@@ -92,21 +117,27 @@ def load_and_validate_config(
     :param uppercase: should keys be returned as uppercase or no.
     :type uppercase: boolean
     """
+    if keys is None and isinstance(schema, Schema):
+        keys = list(schema.schema.keys())
+
     try:
         config = {}
 
         loaded_configs = [
+            load_from_config_server(env_var, keys),
             load_from_json(env_var),
-            load_from_env(env_var)
+            load_from_env(env_var),
         ]
 
         for loaded in loaded_configs:
             if uppercase is True:
                 loaded = dict_keys_to_uppercase(loaded)
-            
+
             config.update(loaded)
 
-        config = schema(config)
+        if schema is not None:
+            config = schema(config)
+
         set_values(config_module_name, config)
     except:
         log.error("Config error", exc_info=True)

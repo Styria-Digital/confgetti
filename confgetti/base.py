@@ -20,7 +20,7 @@ class ValueConvert(object):
         self.false_compare_list = ['false', 'False']
         self.true_compare_list = ['true', 'True']
 
-    def convert_boolean(self, value):
+    def convert_bool(self, value):
         """
         Converts string to boolean if value found in one of compare lists.
 
@@ -39,7 +39,7 @@ class ValueConvert(object):
 
         return value
 
-    def convert_integer(self, value):
+    def convert_int(self, value):
         """
         Converts string to integer.
 
@@ -72,6 +72,18 @@ class ValueConvert(object):
             raise ConvertValueError
 
         return value
+
+    def convert_str(self, value):
+        """
+        Converts value to string.
+
+        :param value: value for conversion
+        :type value: string
+
+        :returns: converted value to new type or in original type
+        :rtype: string
+        """
+        return str(value)
 
     def convert_dict(self, value):
         """
@@ -111,7 +123,12 @@ class ValueConvert(object):
             value = value.decode('ascii')
 
         if convert_to is not None:
-            convert_method_name = 'convert_{0}'.format(convert_to)
+            if isinstance(convert_to, str):
+                convert_name = convert_to
+            else:
+                convert_name = convert_to.__name__
+
+            convert_method_name = 'convert_{0}'.format(convert_name)
             has_convert_method = hasattr(self, convert_method_name)
 
             if has_convert_method is True:
@@ -121,17 +138,22 @@ class ValueConvert(object):
                     value = convert_method(value)
                 except ConvertValueError:
                     log.warning('"{0}" cannot be converted to {1}!'.format(
-                        value, convert_to
+                        value, convert_name
                     ))
             else:
                 log.warning(
-                    'method for "{0}" does not exist!'.format(convert_to)
+                    'method for "{0}" does not exist!'.format(
+                        convert_name
+                    )
                 )
 
         return value
 
 
 class Confgetti(object):
+    """
+    Declares classes for easier override if custom logic is needed.
+    """
     consul_interface_class = ConsulInterface
     value_convert_class = ValueConvert
 
@@ -205,3 +227,75 @@ class Confgetti(object):
             variable = self.value_convert.convert(variable, convert_to)
 
         return variable if variable is not None else fallback
+
+    def get_variables(
+            self, path=None, keys=None, use_env=True, use_consul=True):
+        """
+        Gets multiple variables from environment or consul, based on path.
+        Supports dict and list types `keys` argument.
+        In case of dict, it uses key value as conversion type,
+        in case of list it just passes each key to function for getting
+        variable, and everything returned is string.
+
+        :param path: location of variable on Consul storage.
+        :type path: string/None
+        :param keys: set of keys whose values should be returned back
+        :type keys: dict/list
+        :param use_env: Should method look into environment for variable or no
+        :type use_env: boolean
+        :param use_consul: Should method look into consul for variable or no
+        :type use_consul: boolean
+
+        :returns: dictionary including fetched variables.
+        :rtype: dict
+        """
+        keys = [] if keys is None else keys
+        variables = {}
+
+        if isinstance(keys, dict) is True:
+            for key, value in keys.items():
+                variable = self.get_variable(
+                    key=key,
+                    path=path,
+                    convert_to=value,
+                    use_env=use_env,
+                    use_consul=use_consul)
+
+                if variable is not None:
+                    variables[key] = variable
+        elif isinstance(keys, list) is True:
+            for key in keys:
+                variable = self.get_variable(
+                    key=key,
+                    path=path,
+                    use_env=use_env,
+                    use_consul=use_consul)
+
+                if variable is not None:
+                    variables[key] = variable
+        else:
+            raise TypeError('"keys" argument should be list or dict')
+
+        return variables
+
+
+def get_variables(path, keys, use_env=True, use_consul=True):
+    """
+    Shorthand function for simple Confgetti setup that returns desired
+    variables in dictionary.
+
+    :param path: location of variable on Consul storage.
+    :type path: string/None
+    :param keys: set of keys whose values should be returned back
+    :type keys: dict/list
+    :param use_env: Should method look into environment for variable or no
+    :type use_env: boolean
+    :param use_consul: Should method look into consul for variable or no
+    :type use_consul: boolean
+
+    :returns: dictionary including fetched variables.
+    :rtype: dict
+    """
+    cgtti = Confgetti()
+
+    return cgtti.get_variables(path, keys, use_env, use_consul)
