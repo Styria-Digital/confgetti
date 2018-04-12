@@ -7,6 +7,73 @@
 
 Fetch variables for your application easily from **Consul KV** -> **config\*.json**-> **environment.** via simple python method/s!
 
+## Installation and Quick start
+
+### Install **Confgetti** with `pip`:
+
+```
+pip install confgetti
+```
+
+### Get single variable:
+
+```python
+# my_app/config.py
+from Confgetti import get_variable
+
+cgtti = Confgetti({'host': 'consul_instance_host'})
+
+my_variable = cgtti.get_variable('MY_VARIABLE')
+```
+
+### Get multiple variables:
+
+```python
+# my_app/config.py
+from Confgetti import get_variable
+
+cgtti = Confgetti({'host': 'consul_instance_host'})
+
+my_variables_dict = cgtti.get_variables(keys=[
+    'MY_VARIABLE',
+    'YOUR_VARIABLE',
+    'OUR_VARIABLE'
+])
+```
+
+### Override current module variables:
+
+
+1. `ENV CONSUL_HOST=consul_instance_host`
+2. variables under `MY_APP` namespace in consul
+
+```python
+# my_app/config.py
+from voluptuous import Schema, Coerce
+from confgetti import load_and_validate_config
+
+
+my_variable = None
+your_variable = None
+
+_schema = Schema({
+    "my_variable": str,
+    "your_variable": Coerce(int)
+})
+
+
+load_and_validate_config(__name__, 'MY_APP', _schema)
+
+```
+```python
+# my_app/some_logic.py
+from .config import my_variable, your_variable
+
+print(my_variable)  # should be string and not None
+print(your_variable  # should be integer and not None
+
+```
+
 
 ## The Problem
 
@@ -34,7 +101,7 @@ To run that app successfully usually you need to pass configruation variables to
     2. AWS access key id
     3. Bucket name
 
-So for just 3 external services we could have up to 12 different settings variables that are crucial for successful running of our simple web app.
+So for just 3 external services we could end with up to 12 different settings variables that are crucial for successful running of our simple web app.
 
 How you deal a problem like a noob?
 
@@ -103,5 +170,55 @@ source, local json configuration file in following order:
 With same *override* logic.
 
 
+## Consul settings
+
+Confgetti uses [python-consul](https://python-consul.readthedocs.io/en/latest/) package for communication with Consul's KV store.
+
+Default connection settings are:
+
+```
+host: consul
+port: 8500
+scheme: http
+```
+
+Connection settings can be configured in 2 ways:
+
+### 1. Through environment variables
+
+#### 1. Available environment variables:
+
+```
+CONSUL_HOST - default: 'consul'
+CONSUL_PORT - default: 8500
+CONSUL_SCHEME - default: 'http'
+CONSUL_TOKEN - default: None
+CONSUL_DC - default: None
+```
+
+#### 2. Example
+
+You have running consul instance on `my_host`, port `7500`, and on secured `https`,
+all you need to set following environment variables:
+
+**Environment**
+```
+CONSUL_HOST=my_host
+CONSUL_PORT=7500
+CONSUL_SCHEME=https
+``` 
+
+And you do not have to pass any configuration dictionary when initializing Confgetti, because
+it will read settings from environment.
+
+**Application**
+```python
+# my_app/config.py
+from Confgetti import get_variable
+
+cgtti = Confgetti()
+
+my_variable = cgtti.get_variable('MY_VARIABLE')
+```
 
 
