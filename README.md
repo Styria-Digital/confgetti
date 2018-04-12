@@ -306,7 +306,14 @@ variables = get_variables(path='AWESOMEAPP', keys=convert_dict)
 
 #### confgetti.load_and_validate_config(config_module_name, env_var, schema=None, keys=None, uppercase=False)
 
-Used for overriding 
+Used for overriding current module variables. Usually it is used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html) as `schema` argument for validation, but can be used without it, or with some custom method.
+
+**Arguments:**  
+**config_module_name** - Usually `__name__` variable from current configuration file  
+**env_var** - Prefix of variables in environment, namespace of variables location in **CONSUL** and key under which `json` configuration path is stored in environment. See example for better understanding.  
+**schema**(optional) - Pass custom method here that should return `dict` of variables which will be glued to module later. Usually used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html).  
+**keys**(optional) - variable names list or dict with desired type. If you do not pass this, and you pass `voluptuous.Schema` under `schema` argument, method will return variables declared dict passed to `Schema` instance.  
+**uppercase**(optional) - By default, variables are *glued* to module in lowercase. If this is passed as `True`, variables will be *glued* in uppercase.  
 
 ### confgetti.Confgetti class
 
