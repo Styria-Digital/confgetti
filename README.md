@@ -316,7 +316,7 @@ Used for overriding current module variables. Usually it is used with [voluptuou
 
 **Example:**  
 
-1. variables under `MY_APP` namespace in consul
+- variables under `MY_APP` namespace in consul
 
 ```python
 # my_app/config.py
