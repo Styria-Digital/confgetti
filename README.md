@@ -10,14 +10,12 @@ Fetch variables for your application easily from **Consul KV** -> **config\*.jso
 
 ## The Problem
 
-Modern web app development and deployment oftenly considers isolated app enviroments which are easily manageble, and quickly delpoyed with software as VMs or Docker.
-
+Modern web app development and deployment oftenly considers isolated app enviroments which are easily manageble, and quickly delpoyed with software as VMs or Docker.  
 Everything hardens ands slows down as your app gets bigger and needs more and more *settings* variables declared in you configuration modules or classes, especially for those who manage production state of app or multiple apps. 
 
 Lets call them DevOps.
 
-Imagine simple web application that uses database for data storage, cache mechanism and AWS S3 Bucket static file storage. Oh yes, and our app is Dockerized.
-
+Imagine simple web application that uses database for data storage, cache mechanism and AWS S3 Bucket static file storage. Oh yes, and our app is Dockerized.  
 To run that app successfully usually you need to pass configruation variables to methods/drivers that are communicating with those services. So at least, you'll need:
 
 1. Database
@@ -65,3 +63,44 @@ Here we have just one simple web app, imagine size of problem on some cluster of
 ## The Solution
 
 Here comes **Confgetti** to save a day!
+
+Confgetti uses [Consul](https://www.consul.io) key/value storage for setting and getting your variables.
+If you have running consul instance and `MY_VARIABLE` exists in its KV, you can get it like:
+
+```python
+from Confgetti import get_variable
+
+cgtti = Confgetti({'host': 'consul_instance_host'})
+
+my_variable = cgtti.get_variable('MY_VARIABLE')
+```
+
+Maybe you still want to store some or all variables into environment? No problem!
+Confgetti can get variable from your environment also.
+
+So now we set environment variable `MY_VARIABLE` with some custom value.
+How to get variable from environment?  
+With same `get_variable` method used in example above.
+No need for extra setup, custom code or monkey patching and it is beacuse of Confgetti efficient logic flow.
+
+*Confgetti* tries to fetch variable from two different sources in order, overriding previous source result. 
+When you ask for variable with `get_variable`, lookup is made in following order:
+
+1. Consul
+2. environment
+
+So if you have `MY_VARIABLE` key stored in consul and in environment, Confgetti will return value
+stored in environment (if you do not tell Confgetti otherwise.).
+
+Slightly *high-level* function `load_and_validate_config`, that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
+source, local json configuration file in following order:
+
+1. Consul
+3. config.json
+3. environment
+
+With same *override* logic.
+
+
+
+
