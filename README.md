@@ -131,7 +131,7 @@ Here we have just one simple web app, imagine size of problem on some cluster of
 
 Here comes **Confgetti** to save a day!
 
-Confgetti uses [Consul](https://www.consul.io) key/value storage for setting and getting your variables.
+**Confgetti** uses [Consul](https://www.consul.io) key/value storage for setting and getting your variables.
 If you have running consul instance and `MY_VARIABLE` exists in its KV, you can get it like:
 
 ```python
@@ -217,4 +217,38 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
+**!!!ALERT:** This is only way of configuration for `load_and_validate_config` shorthand use.
+
+### Upon initialization
+
+When initializing **Confgetti** instance you can pass dictionary with **Consnul** connection settings.
+
+#### Default configuration dictionary
+
+```python
+consul_settings = {
+    'host': 'consul',
+    'port': 8500,
+    'scheme': 'http',
+    'token': None,
+    'dc': None
+}
+```
+
+#### Example
+
+You have running consul instance on `my_host`, port `7500`, and on secured `https`:
+
+```python
+# my_app/config.py
+from Confgetti import get_variable
+
+cgtti = Confgetti({
+    'host': 'my_host'
+    'port': 7500,
+    'scheme': 'https'
+})
+
+my_variable = cgtti.get_variable('MY_VARIABLE')
+```
 
