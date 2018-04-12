@@ -5,7 +5,7 @@
 
 #### Tool for configuration and variables managment.
 
-Fetch variables for your application easily from **Consul KV** -> **config\*.json**-> **environment.** via simple python method/s!
+Fetch variables for your application easily from **Consul KV** ➡️ **config\*.json** ➡️ **environment.** via simple python method/s!
 
 ## Content
 
