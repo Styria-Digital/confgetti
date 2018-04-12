@@ -252,3 +252,44 @@ cgtti = Confgetti({
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
+## API
+
+### Confgetti class
+
+#### Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)
+
+Used for fetching single variable from **Consul** or environment.
+
+**key** - key under which variable is defined  
+**path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.  
+**fallback**(optional) - what is returned if variable is not found  
+**convert_to**(optional) - should variable be converted to certain type? If type is passed, **Confgetti** tries to convert variable to passed type. By default, variable is returend as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`
+**use_env**(optional) - should **Confgetti** look to environment or no?  
+**use_consul**(optional) - should **Confgetti** look to **Consul** or no?  
+
+#### Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)
+
+**path**(optional) - Namespace of variable location insike **Consul** KV storage. By default as `None` it looks to root of KV for variable.
+**keys** - list of keys under which variables are defined. This can be plain `list` of names, or `dict` where key is key name of variable and value type of value that should be returned. By default, variables are returned as **string**. Available types: `str`, `int`, `bool`, `float`, `dict`. For example:
+
+```python
+my_variables_dict = cgtti.get_variables(keys=[
+    'MY_VARIABLE',
+    'YOUR_VARIABLE',
+    'OUR_VARIABLE'
+])
+```
+
+or
+
+```python
+my_variables_dict = cgtti.get_variables(keys={
+    'MY_VARIABLE': str,
+    'YOUR_VARIABLE': bool,
+    'OUR_VARIABLE': int
+})
+```
+
+**use_env**(optional) - should **Confgetti** look to environment or no?  
+**use_consul**(optional) - should **Confgetti** look to **Consul** or no?  
+
