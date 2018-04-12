@@ -78,9 +78,9 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 Maybe you still want to store some or all variables into environment? No problem!
 Confgetti can get variable from your environment also.
 
-So now we set environment variable `MY_VARIABLE` with some custom value.
+So now we set environment variable `MY_VARIABLE` with some custom value.  
 How to get variable from environment?  
-With same `get_variable` method used in example above.
+With same `get_variable` method used in example above.  
 No need for extra setup, custom code or monkey patching and it is beacuse of Confgetti efficient logic flow.
 
 *Confgetti* tries to fetch variable from two different sources in order, overriding previous source result. 
