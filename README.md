@@ -101,9 +101,9 @@ To run that app successfully usually you need to pass configruation variables to
     2. AWS access key id
     3. Bucket name
 
-So for just 3 external services we could end with up to 12 different settings variables that are crucial for successful running of our simple web app.
+So for just **3** external services we could end with up to **12** different settings variables that are crucial for successful running of our simple web app.
 
-How you deal a problem like a noob?
+How you deal a problem like a *n00b*?
 
 #### 1. "King of n00bs" way
 
@@ -114,7 +114,7 @@ We even did not touched application code or logic actually but we need to:
 2. build new Docker image
 3. deploy new image
 
-Whole deployment process just because  of those 3 simple variables. Not to mention that there are some sensitive data in those 12 variables,so storing them inside codebase is **NEVER** a good idea and **ALWAYS** security issue.
+Whole deployment process just because  of those **3** simple variables. Not to mention that there are some sensitive data in those **12** variables, so storing them inside codebase is **NEVER** a good idea and **ALWAYS** security issue.
 
 #### 2. "Slightly less n00b" way
 
@@ -122,7 +122,7 @@ Most common way of variables management, especially in Docker world, is to assig
 
 If we put aside security problem of such approach (yes, environment variables could be readable by malicious user), there is still one more common and frustrating problem: A bunch of sensitive variables that need to be correctly passed each time as our Docker container is restarted or redeployed.
 
-Each time you need to pass those 12 variables to `docker` command, and even with `docker-compose` you still need to declare those variables in `docker-compose.yml` file which returns us to previous **"King of n00bs" way**.
+Each time you need to pass those **12** variables to `docker` command, and even with `docker-compose` you still need to declare those variables in `docker-compose.yml` file which returns us to previous **"King of n00bs" way**.
 
 Here we have just one simple web app, imagine size of problem on some cluster of web apps. Your DevOps(oftenly you) will hate you.
 
@@ -143,22 +143,22 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
 Maybe you still want to store some or all variables into environment? No problem!
-Confgetti can get variable from your environment also.
+**Confgetti** can get variable from your environment also.
 
 So now we set environment variable `MY_VARIABLE` with some custom value.  
 How to get variable from environment?  
 With same `get_variable` method used in example above.  
-No need for extra setup, custom code or monkey patching and it is beacuse of Confgetti efficient logic flow.
+No need for extra setup, custom code or monkey patching and it is beacuse of **Confgetti** efficient logic flow.
 
-*Confgetti* tries to fetch variable from two different sources in order, overriding previous source result. 
+**Confgetti** tries to fetch variable from two different sources in order, overriding previous source result. 
 When you ask for variable with `get_variable`, lookup is made in following order:
 
 1. **Consul**
 2. **environment**
 
-So if you have `MY_VARIABLE` key stored in consul and in environment, Confgetti will return value
-stored in environment (if you do not tell Confgetti otherwise.).  
-Confgetti does not punish you if you do not have Consul server running, it will still return value from environment variable!
+So if you have `MY_VARIABLE` key stored in consul and in environment, **Confgetti** will return value
+stored in environment (if you do not tell **Confgetti** otherwise.).  
+**Confgetti** does not punish you if you do not have Consul server running, it will still return value from environment variable!
 
 Slightly *high-level* function `load_and_validate_config`, that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
 source, local json configuration file in following order:
@@ -172,17 +172,15 @@ With same *override* logic.
 
 ## Consul settings
 
-Confgetti uses [python-consul](https://python-consul.readthedocs.io/en/latest/) package for communication with Consul's KV store.
+**Confgetti** uses [python-consul](https://python-consul.readthedocs.io/en/latest/) package for communication with Consul's KV store.
 
 Default connection settings are:
 
-```
-host: consul
-port: 8500
-scheme: http
-```
+host: **consul**  
+port: **8500**  
+scheme: **http**  
 
-Connection settings can be configured in 2 ways:
+Connection settings can be configured in **2** ways:
 
 ### Through environment variables
 
