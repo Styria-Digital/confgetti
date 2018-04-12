@@ -1,4 +1,4 @@
-# CONFGETTI
+# 🎉 CONFGETTI 🎉
 
 [![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
 [![coverage report](https://gl.sds.rocks/GDNI/confgetti/badges/master/coverage.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
@@ -152,7 +152,7 @@ Do not forget, we are dealing with just one simple web app. Imagine a size of th
 
 ## The Solution
 
-Here comes **Confgetti** to save a day!
+Here comes **Confgetti** to save a day! 🎉🎉🎉
 
 **Confgetti** uses [Consul](https://www.consul.io) key/value storage for setting and getting your variables.
 If you have running consul instance and `MY_VARIABLE` exists in its KV, you can get it simple as that:
@@ -179,8 +179,11 @@ No need for extra setup, custom code or monkey patching and it is beacuse of **C
 **Confgetti** tries to fetch variable from two different sources in order, overriding previous source result. 
 When you ask for variable with `get_variable`, lookup is made in following order:
 
-1. **Consul**
-2. **environment**
+**Consul**  
+⬇️  
+**environment**  
+⬇️  
+App  
 
 So if you have `MY_VARIABLE` key stored in consul and in environment, **Confgetti** will return value
 stored in environment (if you do not tell **Confgetti** otherwise.).  
@@ -189,9 +192,13 @@ stored in environment (if you do not tell **Confgetti** otherwise.).
 Slightly *high-level* function [load_and_validate_config](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse), that is used for fetching multiple variables at once and overriding declared module variables, will try to get variable from one extra
 source, local json configuration file in following order:
 
-1. **Consul**
-3. **config.json**
-3. **environment**
+**Consul**  
+⬇️   
+**config.json**  
+⬇️  
+**environment**  
+⬇️  
+App
 
 With same *override* logic.
 
