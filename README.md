@@ -217,7 +217,7 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-**!!!ALERT:** This is only way of configuration for `load_and_validate_config` shorthand use.
+> **!!!ALERT:** This is only way of configuration for `load_and_validate_config` shorthand use.
 
 ### Upon initialization
 
@@ -256,7 +256,7 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 
 ### Shorthand methods
 
-**!!!ALERT:** If you are using shorthand functions, make sure that you have provided **Consul** connection settings via environment variables!
+> **!!!ALERT:** If you are using shorthand functions, make sure that you have provided **Consul** connection settings via environment variables!
  
 #### confgetti.get_variables(path, keys, use_env=True, use_consul=True))
 
