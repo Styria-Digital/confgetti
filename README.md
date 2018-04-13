@@ -1,6 +1,6 @@
 <img src="docs/images/confgetti_logo_small.png" width="200">
 
-*latest version 0.1.7*
+*latest version 0.1.8*
 
 [![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
 [![coverage report](https://gl.sds.rocks/GDNI/confgetti/badges/master/coverage.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
