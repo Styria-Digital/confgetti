@@ -1,6 +1,6 @@
 # 🎉 CONFGETTI 🎉
 
-*latest version 0.1.1*
+*latest version 0.1.0*
 
 [![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
 [![coverage report](https://gl.sds.rocks/GDNI/confgetti/badges/master/coverage.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
