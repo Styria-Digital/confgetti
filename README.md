@@ -32,6 +32,8 @@ Fetch variables for your application easily from **Consul KV** ➡️ **config\*
         1. [get_variable](#confgetticonfgettiget_variablekey-pathnone-fallbacknone-convert_tonone-use_envtrue-use_consultrue)
         2. [get_variables](#confgetticonfgettiget_variablespathnone-keysnone-use_envtrue-use_consultrue)
 6. [Demos](#demos)
+7. [Developer Notes](#developer-notes)
+    1. [Releasing new version](#releasing-new-version)
 
 
 ## Installation and Quick start
@@ -422,3 +424,16 @@ my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 ## Demos
 
 Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scripts.
+
+## Developer Notes
+
+### Releasing new version
+
+This repository has automatic deployment configured via CI runner.
+
+**Steps for automatic deployment to `Styria`'s pypi server:  
+1. Update `CHANGELOG.md` with future version release notes
+2. Commit and push changelog to `master` branch
+3. From root of repository run `bumpversion patch`
+4. Push changes that command in previous step has made to repo
+5. Wait for `CI/CD` pipeline `deploy` step is finished, done!
