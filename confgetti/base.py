@@ -168,11 +168,13 @@ class Confgetti(object):
         :param consul_config: dictionary holding consul configuration data
         :type consul_config: dictionary/None
         """
+        self.prepare_consul = prepare_consul
+
         if consul_config is not None:
             self.consul = self.consul_interface_class()
             self.consul.create_connection(consul_config)
         else:
-            self.consul = self.consul_interface_class(prepare_consul)
+            self.consul = self.consul_interface_class(self.prepare_consul)
 
         self.value_convert = self.value_convert_class()
 
@@ -213,7 +215,7 @@ class Confgetti(object):
         if use_env is True:
             variable = os.environ.get(key)
 
-        if self.consul.connection is not None and use_consul is True \
+        if self.prepare_consul is True and use_consul is True \
                 and variable is None:
             try:
                 variable = self.consul.get_raw_value(key, path)
