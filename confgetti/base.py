@@ -157,7 +157,7 @@ class Confgetti(object):
     consul_interface_class = ConsulInterface
     value_convert_class = ValueConvert
 
-    def __init__(self, prepare_consul=True, consul_config=None):
+    def __init__(self, consul_config=None, prepare_consul=True):
         """
         Uses passed consul configuration to initalize consul interface,
         if configuration is passed. In other case, uses default configuration
@@ -213,7 +213,8 @@ class Confgetti(object):
         if use_env is True:
             variable = os.environ.get(key)
 
-        if use_consul is True and variable is None:
+        if self.consul.connection is not None and use_consul is True \
+                and variable is None:
             try:
                 variable = self.consul.get_raw_value(key, path)
             except (ConnectionError, UndefinedConnectionError):
