@@ -28,7 +28,7 @@ Fetch variables for your application easily from **Consul KV** ➡️ **config\*
     1. [Shorthand methods](#shorthand-methods)
         1. [get_variables](#confgettiget_variablespath-keys-use_envtrue-use_consultrue)
         2. [load_and_validate_config](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse)
-    2. [Confgetti](#confgetticonfgetti-class)
+    2. [Confgetti](#confgetticonfgetticonsul_confignone-prepare_consultrue)
         1. [get_variable](#confgetticonfgettiget_variablekey-pathnone-fallbacknone-convert_tonone-use_envtrue-use_consultrue)
         2. [get_variables](#confgetticonfgettiget_variablespathnone-keysnone-use_envtrue-use_consultrue)
 6. [Demos](#demos)
