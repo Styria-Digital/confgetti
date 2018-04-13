@@ -116,10 +116,6 @@ setup(
             'pytest-sugar',
             'pytest-runner',
             'tox'
-        ],
-        'docs': [
-            'sphinx',
-            'sphinx_rtd_theme'
         ]
     }
 )
