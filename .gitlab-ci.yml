@@ -13,7 +13,7 @@ before_script:
 test_code:
   stage: test
   script:
-    - pip install --extra-index-url="$STYRIA_EXTRA_INDEX_URL/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+    - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
     - pytest . --cov=.
 
 test_build:
@@ -25,8 +25,16 @@ test_build:
 deploy:
   stage: deploy
   script:
-    - python setup.py sdist upload -r $STYRIA_EXTRA_INDEX_URL
+    - echo "[distutils]" >> ~/.pypirc
+    - echo "index-servers =" >> ~/.pypirc
+    - echo "    styria" >> ~/.pypirc
+    - echo " " >> ~/.pypirc
+    - echo "[styria]" >> ~/.pypirc
+    - echo "repository=" ${PYPY_REPO} >> ~/.pypirc
+    - echo "username=" ${PYPI_USER} >> ~/.pypirc
+    - echo "password=" ${PYPI_PASSWORD} >> ~/.pypirc
+    - python setup.py sdist upload -r styria
   only:
-    - tags
+    - master
 
 
