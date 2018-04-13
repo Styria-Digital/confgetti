@@ -431,7 +431,7 @@ Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/dem
 
 This repository has automatic deployment configured via CI runner.
 
-**Steps for automatic deployment to `Styria`'s pypi server:  
+**Steps for automatic deployment to `Styria`'s pypi server:**  
 1. Update `CHANGELOG.md` with future version release notes
 2. Commit and push changelog to `master` branch
 3. From root of repository run `bumpversion patch`
