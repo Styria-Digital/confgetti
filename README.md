@@ -1,5 +1,3 @@
-# 🎉 CONFGETTI 🎉
-
 <img src="docs/images/confgetti_logo_small.png" width="200">
 
 *latest version 0.1.6*
