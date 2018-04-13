@@ -25,7 +25,7 @@ test_build:
 deploy:
   stage: deploy
   script:
-    - python setup.py sdist upload -r ${STYRIA_EXTRA_INDEX_URL}/simple
+    - python setup.py sdist upload -r ${STYRIA_EXTRA_INDEX_URL}
   only:
     - tags
 
