@@ -1,7 +1,12 @@
+variables:
+  PYPI_USER: SECURE
+  PYPI_PASSWORD: SECURE
+
 stages:
   - test
   - build
   - deploy
+  - cleanup
 
 image:
   python:3.6.1
@@ -34,9 +39,15 @@ deploy:
     - 'echo "repository: ${PYPI_REPO}" >> ~/.pypirc'
     - 'echo "username: ${PYPI_USER}" >> ~/.pypirc'
     - 'echo "password: ${PYPI_PASSWORD}" >> ~/.pypirc'
-    - cat ~/.pypirc
     - python setup.py sdist upload -r styria
+    - echo "" > ~/.pypirc && rm ~/.pypirc
   only:
     - master
+
+cleanup_pypirc:
+  stage: cleanup
+  when: always   # this is important; run even if preceding stages failed.
+  script:
+  - rm -vf ~/.pypirc  # we don't want to leave these around, but GitLab may clean up anyway.
 
 
