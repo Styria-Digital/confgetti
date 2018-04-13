@@ -31,7 +31,7 @@ deploy:
     - 'echo "    styria" >> ~/.pypirc'
     - 'echo " " >> ~/.pypirc'
     - 'echo "[styria]" >> ~/.pypirc'
-    - 'echo "repository: ${PYPY_REPO}" >> ~/.pypirc'
+    - 'echo "repository: ${PYPI_REPO}" >> ~/.pypirc'
     - 'echo "username: ${PYPI_USER}" >> ~/.pypirc'
     - 'echo "password: ${PYPI_PASSWORD}" >> ~/.pypirc'
     - cat ~/.pypirc
