@@ -1,6 +1,6 @@
 # Includes
 include LICENSE
-include README.rst
+include README.md
 include setup.py
 include .coveragerc
 include tox.ini
