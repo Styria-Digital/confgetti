@@ -25,6 +25,7 @@ test_build:
 deploy:
   stage: deploy
   script:
+    - mkdir ~/.pip
     # ~/.pip/pip.conf
     - 'echo "[global]" >> ~/.pip/pip.conf'
     - 'echo "extra-index-url = ${STYRIA_EXTRA_INDEX_URL}/simple" >> ~/.pip/pip.conf'
