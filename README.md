@@ -1,5 +1,7 @@
 # 🎉 CONFGETTI 🎉
 
+<img src="docs/images/confgetti_logo_small.png" width="200">
+
 *latest version 0.1.6*
 
 [![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
@@ -8,8 +10,6 @@
 #### Tool for configuration and variables managment.
 
 Fetch variables for your application easily from **Consul KV** ➡️ **config\*.json** ➡️ **environment.** via simple python method/s!
-
-<img src="docs/images/confgetti_logo_small.png" width="200">
 
 ## Content
 
