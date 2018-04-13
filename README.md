@@ -9,6 +9,8 @@
 
 Fetch variables for your application easily from **Consul KV** ➡️ **config\*.json** ➡️ **environment.** via simple python method/s!
 
+![Logo](docs/images/confgetti_logo.png)
+
 ## Content
 
 1. [Installation and Quick start](#installation-and-quick-start)
