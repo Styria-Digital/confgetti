@@ -42,7 +42,7 @@ deploy:
     - python setup.py sdist upload -r styria
     - echo "" > ~/.pypirc && rm ~/.pypirc
   only:
-    - master
+    - tags
 
 cleanup_pypirc:
   stage: cleanup
