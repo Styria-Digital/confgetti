@@ -383,7 +383,35 @@ print(your_variable  # should be integer and not None
 
 ```
 
-### confgetti.Confgetti class
+### confgetti.Confgetti(consul_config=None, prepare_consul=True)
+
+Confgetti intialization accepts two optional arguments, both refering to communication
+with Consul.
+
+**Arguments:** 
+- **consul_config**(optional) - if dictionary with connection settings is passed client for communication with consul is initialized wit this settings.
+
+    **Example:**  
+
+    ```python
+    from confgetti import Confgetti
+
+    cgtti = Confgetti({
+        'host': 'localhost'
+    })
+    ```
+
+- **prepare_consul**(optional) - if `False` is passed, connection to Consul instance is not prepared, and Confgetti will only seek for variables in environment.
+
+    **Example:**  
+
+    ```python
+    from confgetti import Confgetti
+
+    cgtti = Confgetti(prepare_consul=False)
+
+    cggti.get_variable('my_variable') # only environment lookup
+    ```
 
 #### confgetti.Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)
 
