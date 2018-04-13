@@ -25,14 +25,14 @@ test_build:
 deploy:
   stage: deploy
   script:
-    - echo "[distutils]" >> ~/.pypirc
-    - echo "index-servers =" >> ~/.pypirc
-    - echo "    styria" >> ~/.pypirc
-    - echo " " >> ~/.pypirc
-    - echo "[styria]" >> ~/.pypirc
-    - echo "repository: ${PYPY_REPO}" >> ~/.pypirc
-    - echo "username: ${PYPI_USER}" >> ~/.pypirc
-    - echo "password: ${PYPI_PASSWORD}" >> ~/.pypirc
+    - 'echo "[distutils]" >> ~/.pypirc'
+    - 'echo "index-servers =" >> ~/.pypirc'
+    - 'echo "    styria" >> ~/.pypirc'
+    - 'echo " " >> ~/.pypirc'
+    - 'echo "[styria]" >> ~/.pypirc'
+    - 'echo "repository: ${PYPY_REPO}" >> ~/.pypirc'
+    - 'echo "username: ${PYPI_USER}" >> ~/.pypirc'
+    - 'echo "password: ${PYPI_PASSWORD}" >> ~/.pypirc'
     - python setup.py sdist upload -r styria
   only:
     - master
