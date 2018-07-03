@@ -4,11 +4,13 @@ import json
 
 from requests.exceptions import ConnectionError
 
+from confgetti.logger import DuplicateFilter
 from confgetti.remote import ConsulInterface
 from confgetti.exceptions import UndefinedConnectionError, ConvertValueError
 
 
 log = logging.getLogger(__name__)
+log.addFilter(DuplicateFilter())
 
 
 class ValueConvert(object):
