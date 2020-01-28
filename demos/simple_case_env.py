@@ -1,7 +1,7 @@
 import os
 from confgetti import Confgetti
 
-# make sure that consul host is running on yout local machine
+# make sure that consul host is running on your local machine
 os.environ['CONSUL_HOST'] = '127.0.0.1'
 # environment variables are taking precedence over consul variables
 os.environ['my_variable'] = 'bar'

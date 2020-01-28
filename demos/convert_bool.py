@@ -14,5 +14,5 @@ my_third_variable = cgtti.get_variable('my_bad_bool_value', convert_to=bool)
 print(my_variable, type(my_variable))
 print(my_second_variable, type(my_second_variable))
 
-# should returm string and log warning
+# should return string and log warning
 print(my_third_variable, type(my_third_variable))
