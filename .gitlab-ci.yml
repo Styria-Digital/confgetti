@@ -6,48 +6,54 @@ stages:
   - test
   - build
   - deploy
-  - cleanup
 
-image:
-  python:3.6.1
+.cleanup_pypirc: &cleanup_pypirc |
+  rm -vf ~/.pypirc
 
-before_script:
-  # adding pip cache
-  - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
-
-test_code:
+.test:
   stage: test
-  script:
+  before_script:
+    # adding pip cache
+    - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
+    # install dependencies
     - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+  script:
     - pytest . --cov=.
+  after_script:
+    - *cleanup_pypirc
 
+Python3.6:
+  extends: .test
+  image: python:3.6
+
+Python3.7:
+  extends: .test
+  image: python:3.7
+
+Python3.8:
+  extends: .test
+  image: python:3.8
+  
 test_build:
   stage: build
+  image: python:3.7
   script:
     - python setup.py build
     - python setup.py install
+  after_script:
+    - *cleanup_pypirc
 
 deploy:
   stage: deploy
+  image: python:3.7
+  before_script:
+    - pip install twine>=1.12.1
   script:
-    # ~/.pypirc
-    - 'echo "[distutils]" >> ~/.pypirc'
-    - 'echo "index-servers =" >> ~/.pypirc'
-    - 'echo "    styria" >> ~/.pypirc'
-    - 'echo " " >> ~/.pypirc'
-    - 'echo "[styria]" >> ~/.pypirc'
-    - 'echo "repository: ${PYPI_REPO}" >> ~/.pypirc'
-    - 'echo "username: ${PYPI_USER}" >> ~/.pypirc'
-    - 'echo "password: ${PYPI_PASSWORD}" >> ~/.pypirc'
-    - python setup.py sdist upload -r styria
-    - echo "" > ~/.pypirc && rm ~/.pypirc
+    - python setup.py sdist bdist_wheel
+    - twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
   only:
     - tags
-
-cleanup_pypirc:
-  stage: cleanup
-  when: always   # this is important; run even if preceding stages failed.
-  script:
-  - rm -vf ~/.pypirc  # we don't want to leave these around, but GitLab may clean up anyway.
+  after_script: 
+    - *cleanup_pypirc
 
 

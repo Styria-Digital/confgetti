@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [demos] Fixed misspellings and wrong json paths in examples
 
+### Changed
+- [ci] gitlab ci script simplified, added python 3.7,3.8 steps, upload using twine
+
 
 ## 0.1.10 - 2018-07-03
 
@@ -23,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- [base][Confgetti] Order of initialzation keyword arguments
+- [base][Confgetti] Order of initialization keyword arguments
 - [base][Confgetti] Check if `prepare_consul` is False upon getting variables
 
 
