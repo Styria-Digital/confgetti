@@ -44,14 +44,9 @@ test_build:
 deploy:
   stage: deploy
   image: python:3.7
-  # before_script:
-  #   - pip install twine>=1.12.1
-  # script:
-  #   - python setup.py sdist bdist_wheel
-  #   - twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
-  # only:
-  #   - tags
   extends: .poetry
   script:
-    - poetry publish --build --repository sddrocks -u $TWINE_USERNAME -p $TWINE_PASSWORD
+    - poetry publish --build -r sddrocks -u $TWINE_USERNAME -p $TWINE_PASSWORD
+  only:
+    - tags
 
