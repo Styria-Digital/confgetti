@@ -12,7 +12,7 @@ stages:
     # Install and configure poetry
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
     - source $HOME/.poetry/env
-    - poetry config repositories.sdsrocks ${STYRIA_EXTRA_INDEX_URL}/simple
+    - poetry config repositories.sddrocks $TWINE_REPOSITORY_URL
     # Install dependencies
     - poetry install
 
@@ -53,5 +53,5 @@ deploy:
   #   - tags
   extends: .poetry
   script:
-    - poetry publish --build --repository sdsrocks
+    - poetry publish --build --repository sddrocks -u $TWINE_USERNAME -p $TWINE_PASSWORD
 
