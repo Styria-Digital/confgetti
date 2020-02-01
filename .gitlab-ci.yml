@@ -7,24 +7,20 @@ stages:
   - build
   - deploy
 
-.cleanup_pypirc: &cleanup_pypirc |
-  rm -vf ~/.pypirc
-
-.test:
-  stage: test
+.poetry:
   before_script:
-    # # adding pip cache
-    # - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
-    # # install dependencies
-    # - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+    # Install and configure poetry
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
     - source $HOME/.poetry/env
     - poetry config repositories.sdsrocks ${STYRIA_EXTRA_INDEX_URL}/simple
+    # Install dependencies
     - poetry install
+
+.test:
+  stage: test
+  extends: .poetry
   script:
     - poetry run pytest
-  after_script:
-    - *cleanup_pypirc
 
 Python3.6:
   extends: .test
@@ -39,13 +35,11 @@ Python3.8:
   image: python:3.8
   
 test_build:
+  extends: .poetry
   stage: build
   image: python:3.7
   script:
-    - python setup.py build
-    - python setup.py install
-  after_script:
-    - *cleanup_pypirc
+    - poetry build
 
 deploy:
   stage: deploy
@@ -57,7 +51,5 @@ deploy:
     - twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
   only:
     - tags
-  after_script: 
-    - *cleanup_pypirc
 
 
