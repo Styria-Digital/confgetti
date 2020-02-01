@@ -18,6 +18,7 @@ stages:
     # # install dependencies
     # - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - source $HOME/.poetry/env
     - poetry config repositories.sdsrocks ${STYRIA_EXTRA_INDEX_URL}/simple
     - poetry install
   script:
