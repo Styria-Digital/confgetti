@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "confgetti"
-version = "0.1.10-rcpoetry"
+version = "0.1.10-rc.1"
 description = "Package for getting configuration variables from remote configuration server, json files and environment variables in a simple way"
 authors = ["Styria Digital Development <development@styria.dev>"]
 license = "Proprietary"
