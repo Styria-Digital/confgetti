@@ -53,5 +53,5 @@ deploy:
   #   - tags
   extends: .poetry
   script:
-    - poetry publish --build --repository ${STYRIA_EXTRA_INDEX_URL}/simple
+    - poetry publish --build --repository sdsrocks
 
