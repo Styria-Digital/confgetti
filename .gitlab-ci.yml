@@ -13,12 +13,15 @@ stages:
 .test:
   stage: test
   before_script:
-    # adding pip cache
-    - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
-    # install dependencies
-    - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+    # # adding pip cache
+    # - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
+    # # install dependencies
+    # - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    poetry config repositories.sdsrocks ${STYRIA_EXTRA_INDEX_URL}/simple
+    poetry install
   script:
-    - pytest . --cov=.
+    - poetry run pytest
   after_script:
     - *cleanup_pypirc
 
