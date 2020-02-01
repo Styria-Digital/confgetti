@@ -53,5 +53,5 @@ deploy:
   #   - tags
   extends: .poetry
   script:
-    - poetry publish --build --repository ${STYRIA_EXTRA_INDEX_URL} 
+    - poetry publish --build --repository $TWINE_REPOSITORY_URL --username $TWINE_USERNAME --password $TWINE_PASWORD
 
