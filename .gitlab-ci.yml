@@ -7,20 +7,20 @@ stages:
   - build
   - deploy
 
-.cleanup_pypirc: &cleanup_pypirc |
-  rm -vf ~/.pypirc
+.poetry:
+  before_script:
+    # Install and configure poetry
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - source $HOME/.poetry/env
+    - poetry config repositories.sddrocks $TWINE_REPOSITORY_URL
+    # Install dependencies
+    - poetry install
 
 .test:
   stage: test
-  before_script:
-    # adding pip cache
-    - export PIP_CACHE_DIR="/home/gitlabci/cache/pip-cache"
-    # install dependencies
-    - pip install --extra-index-url="${STYRIA_EXTRA_INDEX_URL}/simple" --trusted-host="pypi.sds.rocks" -e .[test]
+  extends: .poetry
   script:
-    - pytest . --cov=.
-  after_script:
-    - *cleanup_pypirc
+    - poetry run pytest
 
 Python3.6:
   extends: .test
@@ -35,25 +35,18 @@ Python3.8:
   image: python:3.8
   
 test_build:
+  extends: .poetry
   stage: build
   image: python:3.7
   script:
-    - python setup.py build
-    - python setup.py install
-  after_script:
-    - *cleanup_pypirc
+    - poetry build
 
 deploy:
   stage: deploy
   image: python:3.7
-  before_script:
-    - pip install twine>=1.12.1
+  extends: .poetry
   script:
-    - python setup.py sdist bdist_wheel
-    - twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
+    - poetry publish --build -r sddrocks -u $TWINE_USERNAME -p $TWINE_PASSWORD
   only:
     - tags
-  after_script: 
-    - *cleanup_pypirc
-
 

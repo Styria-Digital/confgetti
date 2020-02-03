@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [demos] Fixed misspellings and wrong json paths in examples
 
 ### Changed
-- [ci] gitlab ci script simplified, added python 3.7,3.8 steps, upload using twine
+- [ci] gitlab CI script simplified, added python 3.7,3.8 steps
+- [python] switched to poetry build and package manager
 
 
 ## 0.1.10 - 2018-07-03
