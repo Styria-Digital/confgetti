@@ -8,7 +8,7 @@ from confgetti.exceptions import UndefinedConnectionError
 class ConsulInterface(object):
     def __init__(self, prepare_connection=False):
         """
-        Sets empty connection upon intialization.
+        Sets empty connection upon initialization.
         Constructs default consul configuration, that will be used in
         connection to running consul, from environment variables.
         If class object is initialized with 'prepare_connection' as True
@@ -33,7 +33,7 @@ class ConsulInterface(object):
     def create_connection(self, config=None):
         """
         Creates connection to Consul service.
-        Uses default consul dconfiguration constructed from environment
+        Uses default consul configuration constructed from environment
         variables if alternate configuration is not passed to method.
 
         :param config: Initialization creates connection or not
@@ -61,7 +61,7 @@ class ConsulInterface(object):
         """
         Gets value from Consul's key value storage.
         Firstly, calls method for checking connection.
-        Consturcts key path if `path` is provided.
+        Constructs key path if `path` is provided.
         Uses current connection to get value by key path.
         If storage returns data dict, it gets value from it.
 

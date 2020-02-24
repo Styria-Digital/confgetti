@@ -7,7 +7,7 @@ class DuplicateFilter(logging.Filter):
     """
     def filter(self, record):
         """
-        Compare incoming message with las log and if they are not same,
+        Compare incoming message with last log and if they are not same,
         return True which indicates that message should be displayed.
 
         :param record: message record
