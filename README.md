@@ -2,7 +2,7 @@
 
 *latest version 0.1.10*
 
-![](https://github.com/Styria-Digital/confgetti/workflows/main.yml/badge.svg)
+![](https://github.com/Styria-Digital/confgetti/workflows/.github/workflows/main.yml/badge.svg)
 
 #### Tool for configuration and variables management.
 
