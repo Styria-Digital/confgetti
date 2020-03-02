@@ -2,8 +2,7 @@
 
 *latest version 0.1.10*
 
-[![pipeline status](https://gl.sds.rocks/GDNI/confgetti/badges/master/pipeline.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
-[![coverage report](https://gl.sds.rocks/GDNI/confgetti/badges/master/coverage.svg)](https://gl.sds.rocks/GDNI/confgetti/commits/master)
+![](https://github.com/Styria-Digital/confgetti/workflows/Tests/badge.svg)
 
 #### Tool for configuration and variables management.
 
