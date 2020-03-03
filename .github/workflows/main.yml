@@ -40,3 +40,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry build
+      if: startsWith(github.event.ref, 'refs/tags')
+        run: |
+          poetry config repositories.sddrocks http://pypi.sds.rocks:9090
+          poetry publish --build -r sddrocks -u ${{secrets.TWINE_USERNAME}} -p ${{secrets.TWINE_PASSWORD}}
