@@ -1,9 +1,6 @@
 name: Publish Confgetti to PyPI
 
-on:
-  push:
-    tags:
-    - '*'
+on: [push]
 
 jobs:
   deploy:
@@ -20,5 +17,4 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install poetry
-        poetry config repositories.sddrocks http://pypi.sds.rocks:9090
-        poetry publish --build -r sddrocks -u ${{secrets.TWINE_USERNAME}} -p ${{secrets.TWINE_PASSWORD}}
+        poetry publish --build
