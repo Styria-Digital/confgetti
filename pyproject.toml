@@ -3,6 +3,7 @@ name = "confgetti"
 version = "0.1.11"
 description = "Package for getting configuration variables from remote configuration server, json files and environment variables in a simple way"
 authors = ["Styria Digital Development <development@styria.dev>"]
+readme = 'README.md'
 license = "Proprietary"
 
 [tool.poetry.dependencies]
