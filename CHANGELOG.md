@@ -4,12 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## New tag - 2020-01-27
+## 0.1.13 - 2020-03-06
+
+### Added
+
+- [ci] Added invoke task for automated bumpversion
 
 ### Fixed
+
+- README.md reference links and image
+
+
+## 0.1.12 - 2020-03-05
+
+### Added
+
+- [ci] Added GitHub workflow for deployment to PyPI on tags
+
+
+## 0.1.11 - 2020-03-03
+
+### Added
+
+- [ci] Added GitHub CI script, added python 3.7,3.8 and test build steps
+
+### Fixed
+
 - [demos] Fixed misspellings and wrong json paths in examples
 
 ### Changed
+
 - [ci] gitlab CI script simplified, added python 3.7,3.8 steps
 - [python] switched to poetry build and package manager
 
@@ -17,9 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1.10 - 2018-07-03
 
 ## Added
+
 - [base] Added Duplicate messages filter to logger
 
 ## Changed
+
 - [demos] load_and_validate_json.py with correct config path
 
 
