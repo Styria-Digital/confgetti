@@ -1,6 +1,6 @@
-<img src="docs/images/confgetti_logo_small.png" width="200">
+<img src="https://raw.githubusercontent.com/Styria-Digital/confgetti/master/docs/images/confgetti_logo_small.png" width="200">
 
-*latest version 0.1.12*
+[![PyPI version](https://badge.fury.io/py/confgetti.svg)](https://badge.fury.io/py/confgetti)
 
 ![](https://github.com/Styria-Digital/confgetti/workflows/Tests/badge.svg)
 
@@ -35,15 +35,15 @@ Fetch variables for your application easily from **Consul KV** ➡️ **config\*
     1. [Releasing new version](#releasing-new-version)
 
 
-## Installation and QuickStart
+## [Installation and QuickStart](#installation-and-quickstart)
 
-### Install **Confgetti** with `pip`:
+### [Install **Confgetti** with `pip`:](#install-confgetti-with-pip)
 
 ```
 pip install confgetti
 ```
 
-### Get a single variable:
+### [Get a single variable:](#get-a-single-variable)
 
 ```python
 # my_app/config.py
@@ -54,7 +54,7 @@ cgtti = Confgetti({'host': 'consul_instance_host'})
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-### Get multiple variables:
+### [Get multiple variables:](#get-multiple-variables)
 
 ```python
 # my_app/config.py
@@ -69,7 +69,7 @@ my_variables_dict = cgtti.get_variables(keys=[
 ])
 ```
 
-### Override current module variables:
+### [Override module variables:](#override-current-module-variables)
 
 
 1. `ENV CONSUL_HOST=consul_instance_host`
@@ -103,7 +103,7 @@ print(your_variable  # should be an integer and not None
 ```
 
 
-## The Problem
+## [The Problem](#the-problem)
 
 Modern web app development and deployment often consider isolated app environments that are easily manageble and quickly deployed with software as **VM**s or **Docker**.  
 As your app gets bigger and needs more and more *settings* variables declared in your configuration modules or classes, management of those variables becomes frustrating, especially for those who manage the production state of the app or multiple apps and do not care about actual application code.
@@ -131,7 +131,7 @@ So for just **3** external services, we could end with up to **12** different se
 
 How do you deal with a problem like an *n00b*?
 
-#### 1. "King of n00bs" way
+#### [1. King of n00bs way](#1-king-of-n00bs-way)
 
 You could always leave those variable hardcoded to your configuration module, but perhaps, what if suddenly you need to switch to different AWS user and use the different bucket? 
 
@@ -142,7 +142,7 @@ We even do not touch application code or logic actually but we need to:
 
 Whole deployment process just because  of those **3** simple variables. Not to mention that there are some sensitive data in those **12** variables, so storing them inside codebase is **NEVER** a good idea and **ALWAYS** security issue.
 
-#### 2. "Slightly less n00b" way
+#### [2. Slightly less n00b way](#2-slightly-less-n00b-way)
 
 The most common way of variables management, especially in the Docker world, is to assign necessary variables into the container environment via Docker runner and then get them from application code by checking the value of some agreed and known environment key name.
 
@@ -153,7 +153,7 @@ Each time you need to pass those **12** variables to `docker` command, and even 
 Do not forget, we are dealing with just one simple web app. Imagine the size of the problem on some cluster of web apps. Your DevOps(in most cases you) will hate you.
 
 
-## The Solution
+## [The Solution](#the-solution)
 
 Here comes **Confgetti** to save a day! 🎉🎉🎉
 
@@ -450,7 +450,7 @@ my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 
 ## Demos
 
-Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scripts.
+Check [demos](https://github.com/Styria-Digital/confgetti/tree/master/demos) folder for example usages as simple python scripts.
 
 ## Developer Notes
 
