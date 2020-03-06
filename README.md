@@ -177,7 +177,7 @@ How to get a variable from the environment?
 With the same `get_variable` method used in the example above.  
 No need for extra setup, custom code or monkey patching and it is because of **Confgetti** efficient logic flow.
 
-### Logic flow
+### [Logic flow](#logic-flow)
 
 **Confgetti** tries to fetch a variable from two different sources in order, overriding the previous source result. 
 When you ask for a variable with `get_variable`, the lookup is made in the following order:
@@ -206,7 +206,7 @@ App
 With the same *override* logic.
 
 
-## Consul settings
+## [Consul settings](#consul-settings)
 
 **Confgetti** uses a [python-consul](https://python-consul.readthedocs.io/en/latest/) package for communication with Consul's KV store.
 
@@ -218,7 +218,7 @@ scheme: **http**
 
 Connection settings can be configured in **2** ways:
 
-### Through environment variables
+### [Through environment variables](#through-environment-variables)
 
 #### Available environment variables:
 
@@ -255,7 +255,7 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 
 > **!!!ALERT:** This is only way of configuration for `load_and_validate_config` shorthand use.
 
-### Upon initialization
+### [Upon initialization](#upon-initialization)
 
 When initializing **Confgetti** instance you can pass a dictionary with **Consnul** connection settings.
 
@@ -288,13 +288,13 @@ cgtti = Confgetti({
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-## API
+## [API](#api)
 
-### Shorthand methods
+### [Shorthand methods](#shorthand-methods)
 
 > **!!!ALERT:** If you are using shorthand functions, make sure that you have provided **Consul** connection settings via environment variables!
  
-#### confgetti.get_variables(path, keys, use_env=True, use_consul=True))
+#### [confgetti.get_variables(path, keys, use_env=True, use_consul=True)](#confgettiget_variablespath-keys-use_envtrue-use_consultrue)
 
 This is shorthand function for `confgetti.Confgetti.get_variables`.
 Used for fetching multiple variables at once from **Consul** or environment. Returns dictionary for fetched variables.
@@ -339,7 +339,7 @@ convert_dict = {
 variables = get_variables(path='AWESOMEAPP', keys=convert_dict)
 ```
 
-#### confgetti.load_and_validate_config(config_module_name, env_var, schema=None, keys=None, uppercase=False)
+#### [confgetti.load_and_validate_config(config_module_name, env_var, schema=None, keys=None, uppercase=False)](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse)
 
 Used for overriding current module variables. Usually it is used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html) as `schema` argument for validation, but can be used without it, or with some custom method.
 
@@ -382,7 +382,7 @@ print(your_variable  # should be an integer and not None
 
 ```
 
-### confgetti.Confgetti(consul_config=None, prepare_consul=True)
+### [confgetti.Confgetti(consul_config=None, prepare_consul=True)](#confgetticonfgetticonsul_confignone-prepare_consultrue)
 
 Confgetti intialization accepts two optional arguments, both refering to communication
 with Consul.
@@ -412,7 +412,7 @@ with Consul.
     cggti.get_variable('my_variable') # only environment lookup
     ```
 
-#### confgetti.Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)
+#### [confgetti.Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)](#confgetticonfgettiget_variablekey-pathnone-fallbacknone-convert_tonone-use_envtrue-use_consultrue)
 
 Used for fetching single variable from **Consul** or environment. Returns single variable value
 
@@ -434,7 +434,7 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variable('my_variable')
 ```
 
-#### confgetti.Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)
+#### [confgetti.Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)](#confgetticonfgettiget_variablespathnone-keysnone-use_envtrue-use_consultrue)
 
 This is internal method that is used for [get_variables](#confgettiget_variablespath-keys-use_envtrue-use_consultrue) shorthand. Arguments and logic is exactly the same.
 
@@ -448,13 +448,13 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 ```
 
-## Demos
+## [Demos](#demos)
 
 Check [demos](https://github.com/Styria-Digital/confgetti/tree/master/demos) folder for example usages as simple python scripts.
 
-## Developer Notes
+## [Developer Notes](#developer-notes)
 
-### Releasing new version
+### [Releasing new version](#releasing-new-version)
 
 This repository has automatic deployment configured via CI runner.
 
