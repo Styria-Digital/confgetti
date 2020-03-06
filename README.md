@@ -1,6 +1,6 @@
 <img src="docs/images/confgetti_logo_small.png" width="200">
 
-*latest version 0.1.10*
+*latest version 0.1.12*
 
 ![](https://github.com/Styria-Digital/confgetti/workflows/Tests/badge.svg)
 
