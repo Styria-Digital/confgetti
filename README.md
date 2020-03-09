@@ -1,6 +1,6 @@
-<img src="docs/images/confgetti_logo_small.png" width="200">
+<img src="https://raw.githubusercontent.com/Styria-Digital/confgetti/master/docs/images/confgetti_logo_small.png" width="200">
 
-*latest version 0.1.12*
+[![PyPI version](https://badge.fury.io/py/confgetti.svg)](https://badge.fury.io/py/confgetti)
 
 ![](https://github.com/Styria-Digital/confgetti/workflows/Tests/badge.svg)
 
@@ -35,15 +35,15 @@ Fetch variables for your application easily from **Consul KV** ➡️ **config\*
     1. [Releasing new version](#releasing-new-version)
 
 
-## Installation and QuickStart
+## [Installation and QuickStart](#installation-and-quickstart)
 
-### Install **Confgetti** with `pip`:
+### [Install **Confgetti** with `pip`:](#install-confgetti-with-pip)
 
 ```
 pip install confgetti
 ```
 
-### Get a single variable:
+### [Get a single variable:](#get-a-single-variable)
 
 ```python
 # my_app/config.py
@@ -54,7 +54,7 @@ cgtti = Confgetti({'host': 'consul_instance_host'})
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-### Get multiple variables:
+### [Get multiple variables:](#get-multiple-variables)
 
 ```python
 # my_app/config.py
@@ -69,7 +69,7 @@ my_variables_dict = cgtti.get_variables(keys=[
 ])
 ```
 
-### Override current module variables:
+### [Override module variables:](#override-current-module-variables)
 
 
 1. `ENV CONSUL_HOST=consul_instance_host`
@@ -103,7 +103,7 @@ print(your_variable  # should be an integer and not None
 ```
 
 
-## The Problem
+## [The Problem](#the-problem)
 
 Modern web app development and deployment often consider isolated app environments that are easily manageble and quickly deployed with software as **VM**s or **Docker**.  
 As your app gets bigger and needs more and more *settings* variables declared in your configuration modules or classes, management of those variables becomes frustrating, especially for those who manage the production state of the app or multiple apps and do not care about actual application code.
@@ -131,7 +131,7 @@ So for just **3** external services, we could end with up to **12** different se
 
 How do you deal with a problem like an *n00b*?
 
-#### 1. "King of n00bs" way
+#### [1. King of n00bs way](#1-king-of-n00bs-way)
 
 You could always leave those variable hardcoded to your configuration module, but perhaps, what if suddenly you need to switch to different AWS user and use the different bucket? 
 
@@ -142,7 +142,7 @@ We even do not touch application code or logic actually but we need to:
 
 Whole deployment process just because  of those **3** simple variables. Not to mention that there are some sensitive data in those **12** variables, so storing them inside codebase is **NEVER** a good idea and **ALWAYS** security issue.
 
-#### 2. "Slightly less n00b" way
+#### [2. Slightly less n00b way](#2-slightly-less-n00b-way)
 
 The most common way of variables management, especially in the Docker world, is to assign necessary variables into the container environment via Docker runner and then get them from application code by checking the value of some agreed and known environment key name.
 
@@ -153,7 +153,7 @@ Each time you need to pass those **12** variables to `docker` command, and even 
 Do not forget, we are dealing with just one simple web app. Imagine the size of the problem on some cluster of web apps. Your DevOps(in most cases you) will hate you.
 
 
-## The Solution
+## [The Solution](#the-solution)
 
 Here comes **Confgetti** to save a day! 🎉🎉🎉
 
@@ -177,7 +177,7 @@ How to get a variable from the environment?
 With the same `get_variable` method used in the example above.  
 No need for extra setup, custom code or monkey patching and it is because of **Confgetti** efficient logic flow.
 
-### Logic flow
+### [Logic flow](#logic-flow)
 
 **Confgetti** tries to fetch a variable from two different sources in order, overriding the previous source result. 
 When you ask for a variable with `get_variable`, the lookup is made in the following order:
@@ -206,7 +206,7 @@ App
 With the same *override* logic.
 
 
-## Consul settings
+## [Consul settings](#consul-settings)
 
 **Confgetti** uses a [python-consul](https://python-consul.readthedocs.io/en/latest/) package for communication with Consul's KV store.
 
@@ -218,7 +218,7 @@ scheme: **http**
 
 Connection settings can be configured in **2** ways:
 
-### Through environment variables
+### [Through environment variables](#through-environment-variables)
 
 #### Available environment variables:
 
@@ -255,7 +255,7 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 
 > **!!!ALERT:** This is only way of configuration for `load_and_validate_config` shorthand use.
 
-### Upon initialization
+### [Upon initialization](#upon-initialization)
 
 When initializing **Confgetti** instance you can pass a dictionary with **Consnul** connection settings.
 
@@ -288,13 +288,13 @@ cgtti = Confgetti({
 my_variable = cgtti.get_variable('MY_VARIABLE')
 ```
 
-## API
+## [API](#api)
 
-### Shorthand methods
+### [Shorthand methods](#shorthand-methods)
 
 > **!!!ALERT:** If you are using shorthand functions, make sure that you have provided **Consul** connection settings via environment variables!
  
-#### confgetti.get_variables(path, keys, use_env=True, use_consul=True))
+#### [confgetti.get_variables(path, keys, use_env=True, use_consul=True)](#confgettiget_variablespath-keys-use_envtrue-use_consultrue)
 
 This is shorthand function for `confgetti.Confgetti.get_variables`.
 Used for fetching multiple variables at once from **Consul** or environment. Returns dictionary for fetched variables.
@@ -339,7 +339,7 @@ convert_dict = {
 variables = get_variables(path='AWESOMEAPP', keys=convert_dict)
 ```
 
-#### confgetti.load_and_validate_config(config_module_name, env_var, schema=None, keys=None, uppercase=False)
+#### [confgetti.load_and_validate_config(config_module_name, env_var, schema=None, keys=None, uppercase=False)](#confgettiload_and_validate_configconfig_module_name-env_var-schemanone-keysnone-uppercasefalse)
 
 Used for overriding current module variables. Usually it is used with [voluptuous.Schema](http://alecthomas.github.io/voluptuous/docs/_build/html/index.html) as `schema` argument for validation, but can be used without it, or with some custom method.
 
@@ -382,7 +382,7 @@ print(your_variable  # should be an integer and not None
 
 ```
 
-### confgetti.Confgetti(consul_config=None, prepare_consul=True)
+### [confgetti.Confgetti(consul_config=None, prepare_consul=True)](#confgetticonfgetticonsul_confignone-prepare_consultrue)
 
 Confgetti intialization accepts two optional arguments, both refering to communication
 with Consul.
@@ -412,7 +412,7 @@ with Consul.
     cggti.get_variable('my_variable') # only environment lookup
     ```
 
-#### confgetti.Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)
+#### [confgetti.Confgetti.get_variable(key, path=None, fallback=None, convert_to=None, use_env=True, use_consul=True)](#confgetticonfgettiget_variablekey-pathnone-fallbacknone-convert_tonone-use_envtrue-use_consultrue)
 
 Used for fetching single variable from **Consul** or environment. Returns single variable value
 
@@ -434,7 +434,7 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variable('my_variable')
 ```
 
-#### confgetti.Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)
+#### [confgetti.Confgetti.get_variables(path=None, keys=None, use_env=True, use_consul=True)](#confgetticonfgettiget_variablespathnone-keysnone-use_envtrue-use_consultrue)
 
 This is internal method that is used for [get_variables](#confgettiget_variablespath-keys-use_envtrue-use_consultrue) shorthand. Arguments and logic is exactly the same.
 
@@ -448,13 +448,13 @@ cgtti = Confgetti()
 my_variable = cgtti.get_variables(['my_variable', 'your_variable'])
 ```
 
-## Demos
+## [Demos](#demos)
 
-Check [demos](https://gl.sds.rocks/GDNI/confgetti/tree/feature/documentation/demos) folder for example usages as simple python scripts.
+Check [demos](https://github.com/Styria-Digital/confgetti/tree/master/demos) folder for example usages as simple python scripts.
 
-## Developer Notes
+## [Developer Notes](#developer-notes)
 
-### Releasing new version
+### [Releasing new version](#releasing-new-version)
 
 This repository has automatic deployment configured via CI runner.
 
