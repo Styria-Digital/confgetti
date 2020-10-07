@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## New tag - 2020-10-07
+
+### Misc
+
+- README.md wrong imports fixed
+
+
 ## 0.1.13 - 2020-03-06
 
 ### Added

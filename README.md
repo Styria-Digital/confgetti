@@ -47,7 +47,7 @@ pip install confgetti
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti({'host': 'consul_instance_host'})
 
@@ -58,7 +58,7 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti({'host': 'consul_instance_host'})
 
@@ -246,7 +246,7 @@ it will read settings from the environment.
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti()
 
@@ -277,7 +277,7 @@ You have running consul instance on `my_host`, port `7500`, and on secured `http
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti({
     'host': 'my_host'
