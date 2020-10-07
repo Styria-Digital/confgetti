@@ -47,7 +47,7 @@ pip install confgetti
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti({'host': 'consul_instance_host'})
 
@@ -58,7 +58,7 @@ my_variable = cgtti.get_variable('MY_VARIABLE')
 
 ```python
 # my_app/config.py
-from Confgetti import get_variable
+from confgetti import Confgetti
 
 cgtti = Confgetti({'host': 'consul_instance_host'})
 
